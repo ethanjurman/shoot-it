@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="javascripts/plane.js"></script>
+    <link rel="stylesheet" href="stylesheets/plane.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+  </head>
+  <body>
+    <button id="fire" onclick="fire()"></button>
+    interval: <span id="interval">0</span><br/>
+    x: <span id="x">0</span><br/>
+    y: <span id="y">0</span><br/>
+    z: <span id="z">0</span><br/>
+    rate: <span id="rate">0</span><br/>
+    <button id="calibrate" onclick="calibrate()">CALIBRATE ME</button>
+    calibrate x: <span id="c-x">0</span><br/>
+    calibrate y: <span id="c-y">0</span><br/>
+    calibrate z: <span id="c-z">0</span><br/>
+    <button id="rate-calibrate" onclick="calibrateRate()">CALIBRATE RATE</button>
+    calibrate rate: <span id="c-rate">0</span><br/>
+  </body>
+</html>
