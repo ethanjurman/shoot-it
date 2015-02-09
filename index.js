@@ -9,17 +9,14 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/public/index.html');
 });
 
-var players = [];
-var playerId = 0;
+var playerCount = 0;
 io.on('connection', function(socket){
-  ++playerId;
+  var playerId = ++playerCount;
   socket.on('add plane', function(){
-    players.push(playerId); // playerId's must be unique
     console.log(playerId + " joined");
     io.emit('add plane',playerId);
   });
   socket.on('disconnect', function(){
-    players.splice(players.indexOf(playerId),1);
     console.log(playerId + " left");
   });
   socket.on('fire', function(){
