@@ -13,6 +13,9 @@ socket.on('add plane', function(playersInfo){
 socket.on('update plane', function(p){
 	updatePlane(p[0],p[1]); // playerId and motion
 });
+socket.on('remove plane', function(p){
+	removePlane(p);
+})
 socket.on('fire', function(playerId){
 	var plane = document.querySelector('.plane[player-id="'+playerId+'"]');
 	plane.setAttributeNS(null,"fill","blue");
@@ -49,6 +52,7 @@ function addPlane(playerId){
 	play.appendChild(plane);
 	play.appendChild(target)
 }
+
 function updatePlane(playerId,motion){
 	var plane = document.querySelector('.plane[player-id="'+playerId+'"]');
 	var target = document.querySelector('.target[player-id="'+playerId+'"]');
@@ -60,4 +64,11 @@ function updatePlane(playerId,motion){
 		plane.setAttribute("pos-x", x);
 		plane.setAttribute("pos-y", y);
 	}
+}
+
+function removePlane(playerId){
+	var plane = document.querySelector('.plane[player-id="'+playerId+'"]');
+	plane.parentNode.removeChild(plane);
+	var target = document.querySelector('.target[player-id="'+playerId+'"]');
+	target.parentNode.removeChild(target);
 }
