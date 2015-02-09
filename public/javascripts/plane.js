@@ -1,59 +1,55 @@
-// x = Roll
-// y
-// z = pitch
-
 var calibration = {x:0,y:0,z:0,rate:0.1}; // for calibrating zeros
+var invert = {x:false,y:false,z:false};
+var count = 0; // trigger an event if the count
 if (window.DeviceMotionEvent != undefined) {
   var motion = {}
   var socket = io();
   window.ondevicemotion = function(e) {
-    motion.x = (e.accelerationIncludingGravity.x*10).toFixed(2) - calibration.x;
-    motion.y = (e.accelerationIncludingGravity.y*10).toFixed(2) - calibration.y;
-    motion.z = (e.accelerationIncludingGravity.z*10).toFixed(2) - calibration.z;
-    motion.alpha = (e.rotationRate.alpha*10).toFixed(2);
-    motion.beta = (e.rotationRate.beta*10).toFixed(2);
-    motion.gamma = (e.rotationRate.gamma*10).toFixed(2);
+    count++;
+    motion.x = (invert.x ? -1 : 1) * (e.accelerationIncludingGravity.x*2) - calibration.x;
+    motion.y = (invert.y ? -1 : 1) * (e.accelerationIncludingGravity.y*2) - calibration.y;
+    motion.z = (invert.z ? -1 : 1) * (e.accelerationIncludingGravity.z*2) - calibration.z;
+    motion.alpha = (e.rotationRate.alpha*10);
+    motion.beta = (e.rotationRate.beta*10);
+    motion.gamma = (e.rotationRate.gamma*10);
     motion.rate = (Math.abs(motion.alpha) + Math.abs(motion.beta) + Math.abs(motion.gamma));
     document.getElementById("x").innerHTML = 0 || motion.x;
     document.getElementById("y").innerHTML = 0 || motion.y;
     document.getElementById("z").innerHTML = 0 || motion.z;
     document.getElementById("rate").innerHTML = 0 || motion.rate;
     if ( motion.rate > calibration.rate){
-      // threshold for updating target
-      updateTarget(motion);
+      // threshold for updating plane and we're due for a update
+      updatePlane(motion);
     }
     document.getElementById("interval").innerHTML = 0 || e.interval;
+    document.getElementById("count").innerHTML = 0 || count;
   }
 }
 
-window.onkeydown = function(key){
-  var motion = {};
-  motion.x = parseInt(document.getElementById("x").innerHTML);
-  motion.y = parseInt(document.getElementById("y").innerHTML);
-  if (key.keyIdentifier == "Right"){
-    motion.x = motion.x + 5;
-  }
-  if (key.keyIdentifier == "Left"){
-    motion.x = motion.x - 5;
-  }
-  if (key.keyIdentifier == "Down"){
-    motion.y = motion.y - 5;
-  }
-  if (key.keyIdentifier == "Up"){
-    motion.y = motion.y + 5;
-  }
-  document.getElementById("x").innerHTML = motion.x;
-  document.getElementById("y").innerHTML = motion.y;
-  updateTarget(motion);
+function invertX(){
+  invert.x = !invert.x;
+}
+function invertY(){
+  invert.y = !invert.y;
+}
+function invertZ(){
+  invert.z = !invert.z;
 }
 
+var fireTimer = null;
 function fire(){
   var socket = io();
   socket.emit("fire");
 }
+function startFire(){
+  fireTimer = setInterval("fire()",500);
+}
+function stopFire(){
+  window.clearInterval(fireTimer)
+}
 
-function updateTarget(motion){
-  socket.emit("update target",motion); // this goes to index.js
+function updatePlane(motion){
+  socket.emit("update plane",motion); // this goes to index.js
 }
 
 function calibrate(){
@@ -80,5 +76,14 @@ function calibrateRate(){
 
 window.onload = function(){
   var socket = io();
-  socket.emit('add target');
+  socket.emit('add plane');
+  addTouchEvents()
+}
+
+/* TOUCH EVENT STUFF!!!
+*/
+function addTouchEvents() {
+  var el = document.getElementsByTagName("canvas")[0];
+  el.addEventListener("touchstart", startFire, false);
+  el.addEventListener("touchend", stopFire, false);
 }

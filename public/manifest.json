@@ -1,0 +1,7 @@
+{
+  "short_name": "Shoot it",
+  "name": "Shooting Gallery Extravaganza",
+  "display": "standalone",
+  "display": "fullscreen",
+  "orientation": "landscape"
+}

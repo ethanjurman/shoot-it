@@ -9,25 +9,25 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/public/index.html');
 });
 
-var playerCount = 0;
+var players = [];
+var playerId = 0;
 io.on('connection', function(socket){
-  var playerId = ++playerCount;
-  socket.on('add target', function(){
+  ++playerId;
+  socket.on('add plane', function(){
+    players.push(playerId); // playerId's must be unique
     console.log(playerId + " joined");
-    io.emit('add target',[playerId,playerCount]);
+    io.emit('add plane',playerId);
   });
   socket.on('disconnect', function(){
-    playerCount--;
+    players.splice(players.indexOf(playerId),1);
     console.log(playerId + " left");
   });
   socket.on('fire', function(){
     console.log("fire from " + playerId)
     io.emit('fire',playerId);
   });
-  socket.on('update target', function(motion){
-    console.log("update target for player "+playerId);
-    console.log(motion);
-    io.emit('update target',[playerId,motion]); // this goes to main.js
+  socket.on('update plane', function(motion){
+    io.emit('update plane',[playerId,motion]); // this goes to main.js
   });
 });
 

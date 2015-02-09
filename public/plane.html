@@ -4,19 +4,28 @@
     <script src="javascripts/plane.js"></script>
     <link rel="stylesheet" href="stylesheets/plane.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+    <link rel="manifest" href="manifest.json">
   </head>
-  <body>
-    <button id="fire" onclick="fire()"></button>
-    interval: <span id="interval">0</span><br/>
-    x: <span id="x">0</span><br/>
-    y: <span id="y">0</span><br/>
-    z: <span id="z">0</span><br/>
-    rate: <span id="rate">0</span><br/>
-    <button id="calibrate" onclick="calibrate()">CALIBRATE ME</button>
-    calibrate x: <span id="c-x">0</span><br/>
-    calibrate y: <span id="c-y">0</span><br/>
-    calibrate z: <span id="c-z">0</span><br/>
-    <button id="rate-calibrate" onclick="calibrateRate()">CALIBRATE RATE</button>
-    calibrate rate: <span id="c-rate">0</span><br/>
+  <body onmouseup="stopFire()">
+    <canvas id="canvas" width="600" height="600" style="border:solid black 1px;">
+      Your browser does not support canvas element.
+    </canvas><br/>
+    <div id="settings">
+      count: <span id="count">0</span><br/>
+      interval: <span id="interval">0</span><br/>
+      x: <span id="x">0</span><br/>
+      y: <span id="y">0</span><br/>
+      z: <span id="z">0</span><br/>
+      rate: <span id="rate">0</span><br/>
+      <button id="calibrate" onclick="calibrate()">CALIBRATE ME</button>
+      calibrate x: <span id="c-x">0</span><br/>
+      calibrate y: <span id="c-y">0</span><br/>
+      calibrate z: <span id="c-z">0</span><br/>
+      <button id="rate-calibrate" onclick="calibrateRate()">CALIBRATE RATE</button>
+      calibrate rate: <span id="c-rate">0</span><br/>
+      <button class="invert" onclick="invertX()">INVERT X</button>
+      <button class="invert" onclick="invertY()">INVERT Y</button>
+      <button class="invert" onclick="invertZ()">INVERT Z</button>
+    </div>
   </body>
 </html>
