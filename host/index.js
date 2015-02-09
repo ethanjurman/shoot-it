@@ -1,18 +1,24 @@
+var Game = require('./game/game');
+
 var socket = io();
 var bounds;
 window.onload = function(){
 	socket.emit('update plane');
 	bounds = document.getElementById('play').getBoundingClientRect();
-}
+};
+
 window.onresize = function(){
 	bounds = document.getElementById('play').getBoundingClientRect();
-}
+};
+
 socket.on('add plane', function(playersInfo){
 	addPlane(playersInfo); // player added
 });
+
 socket.on('update plane', function(p){
 	updatePlane(p[0],p[1]); // playerId and motion
 });
+
 socket.on('fire', function(playerId){
 	var plane = document.querySelector('.plane[player-id="'+playerId+'"]');
 	plane.setAttributeNS(null,"fill","blue");
@@ -20,6 +26,7 @@ socket.on('fire', function(playerId){
 		plane.setAttributeNS(null,"fill","red");
 	},250);
 });
+
 function addPlane(playerId){
 	var play = document.getElementById("play");
 	console.log("ADDED PLAYER");
@@ -48,7 +55,8 @@ function addPlane(playerId){
 	target.setAttributeNS(null,"fill","none");
 	play.appendChild(plane);
 	play.appendChild(target)
-}
+};
+
 function updatePlane(playerId,motion){
 	var plane = document.querySelector('.plane[player-id="'+playerId+'"]');
 	var target = document.querySelector('.target[player-id="'+playerId+'"]');
@@ -60,4 +68,8 @@ function updatePlane(playerId,motion){
 		plane.setAttribute("pos-x", x);
 		plane.setAttribute("pos-y", y);
 	}
-}
+};
+
+window.onload = function() {
+  var g = new Game();
+};
