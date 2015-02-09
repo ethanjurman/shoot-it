@@ -41,6 +41,7 @@ io.on('connection', function(socket){
   });
   socket.on('disconnect', function(){
     console.log(playerId + " left");
+    io.emit('remove plane',playerId);
   });
   socket.on('fire', function(){
     console.log("fire from " + playerId)
