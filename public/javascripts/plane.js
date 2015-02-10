@@ -40,14 +40,21 @@ var fireTimer = null;
 function fire(){
   var socket = io();
   socket.emit("fire");
+  var fireButton = document.getElementById("fire");
+  fireButton.style.background = "darkblue";
+  window.setTimeout(function(){
+    fireButton.style.background = "darkred";
+  },250);
 }
-function startFire(){
-  fireTimer = setInterval("fire()",500);
+// If fire event can be triggered when held down, maybe we can do this
+function startFire(evt){
+  evt.preventDefault();
+  fireTimer = setInterval("fire()",250);
 }
-function stopFire(){
+function stopFire(evt){
+  evt.preventDefault();
   window.clearInterval(fireTimer)
 }
-
 function updatePlane(motion){
   socket.emit("update plane",motion); // this goes to index.js
 }
@@ -77,13 +84,4 @@ function calibrateRate(){
 window.onload = function(){
   var socket = io();
   socket.emit('add plane');
-  addTouchEvents()
-}
-
-/* TOUCH EVENT STUFF!!!
-*/
-function addTouchEvents() {
-  var el = document.getElementsByTagName("canvas")[0];
-  el.addEventListener("touchstart", startFire, false);
-  el.addEventListener("touchend", stopFire, false);
 }

@@ -47,7 +47,7 @@ function addPlane(playerId){
 	target.setAttributeNS(null,"r",15);
 	target.setAttributeNS(null,"transform","translate(0 0)");
 	target.setAttributeNS(null,"stroke","black");
-	target.setAttributeNS(null,"stroke-width",1);
+	target.setAttributeNS(null,"stroke-width",2);
 	target.setAttributeNS(null,"fill","none");
 	play.appendChild(plane);
 	play.appendChild(target)
