@@ -16,8 +16,6 @@ var Game = function() {
   var handleResize = function() {
     self.camera.aspect = window.innerWidth / window.innerHeight;
     self.camera.updateProjectionMatrix();
-
-    self.effect.setSize( window.innerWidth, window.innerHeight );
   };
   window.addEventListener( 'resize', handleResize, false );
 };
@@ -28,6 +26,7 @@ var padn = function(str) {
 };
 Game.prototype.render = function() {
   this.scene.simulate(); // run physics
+  this.renderer.render(this.scene, this.camera);
   
   this.time = Date.now();
   
@@ -149,12 +148,12 @@ Game.prototype.initScene = function() {
   );
   this.camera.position.set( 60, 50, 60 );
   this.camera.lookAt( this.scene.position );
-  //this.scene.add( this.camera );
+  this.scene.add( this.camera );
 
   this.scene.fog = new THREE.Fog( 0xffffff, 0, 750 );
 
   this.floor = new Physijs.BoxMesh(
-    new THREE.CubeGeometry( 1000, 1, 1000 ),
+    new THREE.BoxGeometry( 1000, 1, 1000 ),
     new THREE.MeshPhongMaterial({ color: 0x666666 }),
     0 //0 mass, ground.
   );
@@ -202,6 +201,7 @@ Game.prototype.initScene = function() {
 
   Entity.setWorld(this.scene); //Set up the entity system to work with this environment
   this.requestAnimationFrame();
+  console.log('setup!');
 };
 
 module.exports = Game;
