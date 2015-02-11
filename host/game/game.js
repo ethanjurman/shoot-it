@@ -41,11 +41,10 @@ Game.prototype.initScene = function() {
   this.time = Date.now();
   this.renderer = new THREE.WebGLRenderer({
     devicePixelRatio: 1,
-    alpha: false,
     clearColor: 0xffffff,
-    antialias: true
+    antialias: true,
+    logarithmicDepthBuffer: true
   });
-  this.renderer.setClearColor(0xffffff);
   this.renderer.setSize( window.innerWidth, window.innerHeight );
 
   this.scene = new Physijs.Scene();
