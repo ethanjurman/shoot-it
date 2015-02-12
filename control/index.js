@@ -6,18 +6,18 @@ if (window.DeviceMotionEvent != undefined) {
   var socket = io();
   window.ondevicemotion = function(e) {
     count++;
-    motion.x = (invert.x ? -1 : 1) * (e.accelerationIncludingGravity.x*2) - calibration.x;
-    motion.y = (invert.y ? -1 : 1) * (e.accelerationIncludingGravity.y*2) - calibration.y;
-    motion.z = (invert.z ? -1 : 1) * (e.accelerationIncludingGravity.z*2) - calibration.z;
-    motion.alpha = (e.rotationRate.alpha*10);
-    motion.beta = (e.rotationRate.beta*10);
-    motion.gamma = (e.rotationRate.gamma*10);
-    motion.rate = (Math.abs(motion.alpha) + Math.abs(motion.beta) + Math.abs(motion.gamma));
+    motion.x = (invert.x ? -1 : 1) * (e.accelerationIncludingGravity.x*2).toFixed() - calibration.x;
+    motion.y = (invert.y ? -1 : 1) * (e.accelerationIncludingGravity.y*2).toFixed() - calibration.y;
+    motion.z = (invert.z ? -1 : 1) * (e.accelerationIncludingGravity.z*2).toFixed() - calibration.z;
+    var alpha = (e.rotationRate.alpha*10);
+    var beta = (e.rotationRate.beta*10);
+    var gamma = (e.rotationRate.gamma*10);
+    var rate = (Math.abs(alpha) + Math.abs(beta) + Math.abs(gamma));
     document.getElementById("x").innerHTML = 0 || motion.x;
     document.getElementById("y").innerHTML = 0 || motion.y;
     document.getElementById("z").innerHTML = 0 || motion.z;
-    document.getElementById("rate").innerHTML = 0 || motion.rate;
-    if ( motion.rate > calibration.rate){
+    document.getElementById("rate").innerHTML = 0 || rate;
+    if ( rate > calibration.rate){
       // threshold for updating plane and we're due for a update
       updatePlane(motion);
     }
@@ -40,14 +40,21 @@ var fireTimer = null;
 function fire(){
   var socket = io();
   socket.emit("fire");
+  var fireButton = document.getElementById("fire");
+  fireButton.style.background = "darkblue";
+  window.setTimeout(function(){
+    fireButton.style.background = "darkred";
+  },250);
 }
-function startFire(){
-  fireTimer = setInterval("fire()",500);
+// If fire event can be triggered when held down, maybe we can do this
+function startFire(evt){
+  evt.preventDefault();
+  fireTimer = setInterval("fire()",250);
 }
-function stopFire(){
+function stopFire(evt){
+  evt.preventDefault();
   window.clearInterval(fireTimer)
 }
-
 function updatePlane(motion){
   socket.emit("update plane",motion); // this goes to index.js
 }
@@ -77,13 +84,4 @@ function calibrateRate(){
 window.onload = function(){
   var socket = io();
   socket.emit('add plane');
-  addTouchEvents()
-}
-
-/* TOUCH EVENT STUFF!!!
-*/
-function addTouchEvents() {
-  var el = document.getElementsByTagName("canvas")[0];
-  el.addEventListener("touchstart", startFire, false);
-  el.addEventListener("touchend", stopFire, false);
 }
