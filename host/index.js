@@ -62,7 +62,7 @@ function addPlane(playerId){
 	target.setAttributeNS(null,"fill","none");
 	play.appendChild(plane);
 	play.appendChild(target);
-  
+
     var ply = players.create();
     ply.userId = playerId;
     ply.setPos(new THREE.Vector3(0,0,0));
@@ -81,12 +81,12 @@ function updatePlane(playerId,motion){
 	}
     var ply = players.find(playerId);
     if (ply) {
-      var planebound = {width: 20, height: 20};
-      var x = Math.min(planebound.width/2,Math.max(-planebound.width/2,(ply.getPos().x + motion.y)));
-      var y = Math.min(planebound.height/2,Math.max(-planebound.height/2,(ply.getPos().y + motion.z)));
+      var planebound = {width: 40, height: 40};
+      var x = Math.min(planebound.width/2,Math.max(-planebound.width/2,(ply.getPos().x + motion.y/20)));
+      var y = Math.min(planebound.height/2,Math.max(-planebound.height/2,(ply.getPos().y - motion.z/20)));
       var pos = new THREE.Vector3(x, y, 0);
-      //ply.setPos(pos);
-    } 
+      ply.setPos(pos);
+    }
 };
 
 function removePlane(playerId){
