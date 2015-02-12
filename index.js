@@ -3,11 +3,34 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var path = require('path');
-app.use(express.static(path.join(__dirname, 'public')));
+var browserify = require('browserify-middleware');
+var to5ify = require("6to5ify");
 
 app.get('/', function(req, res){
-  res.sendFile(__dirname + '/public/index.html');
+  res.sendFile(__dirname + '/host/index.html');
 });
+
+app.get('/control', function(req, res){
+  res.sendFile(__dirname + '/control/index.html');
+});
+
+app.get('/main.css', function(req, res){
+  res.sendFile(__dirname + '/host/main.css');
+});
+
+app.get('/control/main.css', function(req, res){
+  res.sendFile(__dirname + '/control/main.css');
+});
+
+app.get('/host.js', browserify('./host/index.js', {transforms: [to5ify]}));
+app.get('/control.js', browserify('./control/index.js', {transforms: [to5ify]}));
+
+app.get('/manifest.json', function(req, res){
+  res.sendFile(__dirname + '/manifest.json');
+});
+
+
+app.use(express.static(path.join(__dirname, 'host/game/libs')));
 
 var playerCount = 0;
 io.on('connection', function(socket){
