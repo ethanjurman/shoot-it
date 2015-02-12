@@ -1,6 +1,9 @@
 var socket = io();
 var bounds;
 window.onload = function(){
+	new QRCode(document.getElementById("qr_code"), window.location.href + "plane.html");
+	document.getElementById("qr_code").appendChild(
+		document.createTextNode(window.location.href + "plane.html"));
 	socket.emit('update plane');
 	bounds = document.getElementById('play').getBoundingClientRect();
 }
