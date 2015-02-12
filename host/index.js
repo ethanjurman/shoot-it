@@ -1,10 +1,13 @@
 var Game = require('./game/game');
+var players = require('./game/player-store');
+var THREE = require('./game/libs/three');
 
 var socket = io();
 var bounds;
 window.onload = function(){
 	socket.emit('update plane');
 	bounds = document.getElementById('play').getBoundingClientRect();
+    var g = new Game();
 };
 
 window.onresize = function(){
@@ -59,6 +62,10 @@ function addPlane(playerId){
 	target.setAttributeNS(null,"fill","none");
 	play.appendChild(plane);
 	play.appendChild(target);
+  
+    var ply = players.create();
+    ply.userId = playerId;
+    ply.setPos(new THREE.Vector3(0,0,0));
 };
 
 function updatePlane(playerId,motion){
@@ -72,15 +79,24 @@ function updatePlane(playerId,motion){
 		plane.setAttribute("pos-x", x);
 		plane.setAttribute("pos-y", y);
 	}
+    var ply = players.find(playerId);
+    if (ply) {
+      var planebound = {width: 200, height: 200};
+      var x = Math.min(planebound.width/2,Math.max(-planebound.width/2,(ply.getPos().x + motion.y)));
+      var y = Math.min(planebound.height/2,Math.max(-planebound.height/2,(ply.getPos().y + motion.z)));
+      var pos = new THREE.Vector3(x*10, y*10, 0);
+      ply.setPos(pos);
+      console.log(ply.getPos());
+    } 
 };
 
 function removePlane(playerId){
 	var plane = document.querySelector('.plane[player-id="'+playerId+'"]');
-	plane.parentNode.removeChild(plane);
+    if (plane && plane.parentNode) {
+      plane.parentNode.removeChild(plane);
+    }
 	var target = document.querySelector('.target[player-id="'+playerId+'"]');
-	target.parentNode.removeChild(target);
-};
-
-window.onload = function() {
-  var g = new Game();
+    if (target && target.parentNode) {
+	   target.parentNode.removeChild(target);
+    }
 };

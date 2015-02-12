@@ -5,11 +5,7 @@ var Entity = require('./entity/entity');
 Physijs.scripts.worker = '/physijs_worker.js';
 Physijs.scripts.ammo = '/ammo.js';
 
-var Game = function() {
-
-  this.path = [new THREE.Vector3(0,10,200), new THREE.Vector3(0,200,0), new THREE.Vector3(200,10,0)];
-  this.ttl = 4000;
-  
+var Game = function() {  
   this.initScene();
 
   var self = this;
@@ -21,11 +17,10 @@ var Game = function() {
 };
 
 Game.prototype.render = function() {
-  this.scene.simulate(); // run physics
+  this.scene.simulate(Date.now() - this.time); // run physics
   this.renderer.render(this.scene, this.camera);
   
   this.time = Date.now();
-  
   this.requestAnimationFrame();
 };
 
@@ -41,14 +36,13 @@ Game.prototype.initScene = function() {
   this.time = Date.now();
   this.renderer = new THREE.WebGLRenderer({
     devicePixelRatio: 1,
-    clearColor: 0xffffff,
     antialias: true,
     logarithmicDepthBuffer: true
   });
+  this.renderer.setClearColor(0xffffffff);
   this.renderer.setSize( window.innerWidth, window.innerHeight );
 
   this.scene = new Physijs.Scene();
-
 
   this.camera = new THREE.PerspectiveCamera(
     75,
@@ -56,20 +50,11 @@ Game.prototype.initScene = function() {
     1,
     1000
   );
-  this.camera.position.set( 60, 50, 60 );
-  this.camera.lookAt( this.scene.position );
+  this.camera.position.set( 0, 0, 50 );
+  this.camera.lookAt( new THREE.Vector3(0, 0, 0) );
   this.scene.add( this.camera );
 
-  this.scene.fog = new THREE.Fog( 0xffffff, 0, 750 );
-
-  this.floor = new Physijs.BoxMesh(
-    new THREE.BoxGeometry( 1000, 1, 1000 ),
-    new THREE.MeshPhongMaterial({ color: 0x666666 }),
-    0 //0 mass, ground.
-  );
-  this.floor.receiveShadow = true;
-  this.scene.add( this.floor );
-  
+  this.scene.fog = new THREE.Fog( 0xffffff, 0, 750 );  
   this.scene.setGravity(new THREE.Vector3(0,-15,0));
 
   //Lighting
