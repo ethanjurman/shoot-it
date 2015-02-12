@@ -1,11 +1,9 @@
 var THREE = require('./libs/three');
-var Physijs = require('./libs/physi');
+var CANNON = require('./libs/cannon');
 var Entity = require('./entity/entity');
 
-Physijs.scripts.worker = '/physijs_worker.js';
-Physijs.scripts.ammo = '/ammo.js';
-
-var Game = function() {  
+var Game = function() {
+  this.initPhysics();
   this.initScene();
 
   var self = this;
@@ -17,7 +15,10 @@ var Game = function() {
 };
 
 Game.prototype.render = function() {
-  this.scene.simulate(Date.now() - this.time); // run physics
+  this.world.step((Date.now() - this.time)/16.666);
+  
+  Entity._think(); //Copy all physcoords to world coords, call any think hooks
+  
   this.renderer.render(this.scene, this.camera);
   
   this.time = Date.now();
@@ -33,7 +34,6 @@ Game.prototype.requestAnimationFrame = function() {
 
 Game.prototype.initScene = function() {
   var self = this;
-  this.time = Date.now();
   this.renderer = new THREE.WebGLRenderer({
     devicePixelRatio: 1,
     antialias: true,
@@ -42,7 +42,7 @@ Game.prototype.initScene = function() {
   this.renderer.setClearColor(0xffffffff);
   this.renderer.setSize( window.innerWidth, window.innerHeight );
 
-  this.scene = new Physijs.Scene();
+  this.scene = new THREE.Scene();
 
   this.camera = new THREE.PerspectiveCamera(
     75,
@@ -54,8 +54,7 @@ Game.prototype.initScene = function() {
   this.camera.lookAt( new THREE.Vector3(0, 0, 0) );
   this.scene.add( this.camera );
 
-  this.scene.fog = new THREE.Fog( 0xffffff, 0, 750 );  
-  this.scene.setGravity(new THREE.Vector3(0,-15,0));
+  this.scene.fog = new THREE.Fog( 0xffffff, 0, 750 );
 
   //Lighting
   var hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
@@ -72,8 +71,19 @@ Game.prototype.initScene = function() {
 
   document.querySelector( 'body' ).appendChild( this.renderer.domElement );
 
-  Entity.setWorld(this.scene); //Set up the entity system to work with this environment
+  Entity.setScene(this.scene); //Set up the entity system to work with this environment
   this.requestAnimationFrame();
+};
+
+Game.prototype.initPhysics = function() {
+  this.time = Date.now();
+  this.world = new CANNON.World();
+  this.world.gravity.set(0,10,0);
+  this.world.broadphase = new CANNON.NaiveBroadphase();
+  this.world.solver.iterations = 10;  
+  
+  Entity.setWorld(this.world);
+  
 };
 
 module.exports = Game;

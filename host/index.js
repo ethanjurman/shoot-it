@@ -81,12 +81,11 @@ function updatePlane(playerId,motion){
 	}
     var ply = players.find(playerId);
     if (ply) {
-      var planebound = {width: 200, height: 200};
+      var planebound = {width: 20, height: 20};
       var x = Math.min(planebound.width/2,Math.max(-planebound.width/2,(ply.getPos().x + motion.y)));
       var y = Math.min(planebound.height/2,Math.max(-planebound.height/2,(ply.getPos().y + motion.z)));
-      var pos = new THREE.Vector3(x*10, y*10, 0);
-      ply.setPos(pos);
-      console.log(ply.getPos());
+      var pos = new THREE.Vector3(x, y, 0);
+      //ply.setPos(pos);
     } 
 };
 

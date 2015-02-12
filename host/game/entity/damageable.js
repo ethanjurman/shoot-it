@@ -1,7 +1,7 @@
 var Entity = require('./entity');
 
-var Damageable = function(model, phys, mass, health, cb) {
-  Entity.call(this, model, phys, mass, cb);
+var Damageable = function(health) {
+  Entity.call(this);
   this.setHealth(health);
 };
 Damageable.prototype = Object.create( Entity.prototype );
