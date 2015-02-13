@@ -67,7 +67,6 @@ function updatePlane(motion){
 }
 
 function calibrate(){
-  alert('called');
   calibration.x = 0;
   calibration.y = 0;
   calibration.z = 0;
