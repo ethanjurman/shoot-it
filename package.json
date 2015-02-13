@@ -2,7 +2,7 @@
   "name": "shoot-it",
   "version": "0.0.1",
   "main": "index.js",
-  "description": "tuns of fun shooting gallery",
+  "description": "tons of fun shooting gallery",
   "scripts": {
     "start": "node index.js"
   },
