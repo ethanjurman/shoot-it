@@ -1,10 +1,9 @@
-var THREE = require('../three');
-
 /**
  * Loads a Wavefront .mtl file specifying materials
  *
  * @author angelxuanchang
  */
+var THREE = require('../three');
 
 THREE.MTLLoader = function( baseUrl, options, crossOrigin ) {
 
@@ -28,7 +27,7 @@ THREE.MTLLoader.prototype = {
 
 			onLoad( scope.parse( text ) );
 
-		} );
+		}, onProgress, onError );
 
 	},
 
@@ -89,6 +88,7 @@ THREE.MTLLoader.prototype = {
 		}
 
 		var materialCreator = new THREE.MTLLoader.MaterialCreator( this.baseUrl, this.options );
+		materialCreator.crossOrigin = this.crossOrigin
 		materialCreator.setMaterials( materialsInfo );
 		return materialCreator;
 
@@ -365,18 +365,18 @@ THREE.MTLLoader.MaterialCreator.prototype = {
 
 	loadTexture: function ( url, mapping, onLoad, onError ) {
 
-		var isCompressed = /\.dds$/i.test( url );
+		var texture;
+		var loader = THREE.Loader.Handlers.get( url );
 
-		if ( isCompressed ) {
+		if ( loader !== null ) {
 
-			var texture = THREE.ImageUtils.loadCompressedTexture( url, mapping, onLoad, onError );
+			texture = loader.load( url, onLoad );
 
 		} else {
 
-			var image = new Image();
-			var texture = new THREE.Texture( image, mapping );
+			texture = new THREE.Texture();
 
-			var loader = new THREE.ImageLoader();
+			loader = new THREE.ImageLoader();
 			loader.crossOrigin = this.crossOrigin;
 			loader.load( url, function ( image ) {
 
@@ -388,6 +388,8 @@ THREE.MTLLoader.MaterialCreator.prototype = {
 			} );
 
 		}
+
+		if ( mapping !== undefined ) texture.mapping = mapping;
 
 		return texture;
 

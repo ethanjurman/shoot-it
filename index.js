@@ -29,8 +29,7 @@ app.get('/manifest.json', function(req, res){
   res.sendFile(__dirname + '/manifest.json');
 });
 
-
-app.use(express.static(path.join(__dirname, 'host/game/libs')));
+app.use(express.static(path.join(__dirname, 'static')));
 
 var playerCount = 0;
 io.on('connection', function(socket){

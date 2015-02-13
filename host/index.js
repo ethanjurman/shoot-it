@@ -1,13 +1,15 @@
 var Game = require('./game/game');
 var players = require('./game/player-store');
 var THREE = require('./game/libs/three');
+var QRCode = require('./game/libs/qrcode.min');
 
 var socket = io();
 var bounds;
 window.onload = function(){
-	new QRCode(document.getElementById("qr_code"), window.location.href + "plane.html");
+	var qrcode = window.location.href + "control";
+	new QRCode(document.getElementById("qr_code"), qrcode);
 	document.getElementById("qr_code").appendChild(
-		document.createTextNode(window.location.href + "plane.html"));
+		document.createTextNode(qrcode));
 	socket.emit('update plane');
 	bounds = document.getElementById('play').getBoundingClientRect();
     var g = new Game();
@@ -63,8 +65,8 @@ function addPlane(playerId){
 	target.setAttributeNS(null,"stroke","black");
 	target.setAttributeNS(null,"stroke-width",2);
 	target.setAttributeNS(null,"fill","none");
-	play.appendChild(plane);
-	play.appendChild(target);
+	// play.appendChild(plane);
+	// play.appendChild(target);
 
     var ply = players.create();
     ply.userId = playerId;
@@ -72,6 +74,7 @@ function addPlane(playerId){
 };
 
 function updatePlane(playerId,motion){
+	// TODO lots of magic numbers
 	var plane = document.querySelector('.plane[player-id="'+playerId+'"]');
 	var target = document.querySelector('.target[player-id="'+playerId+'"]');
 	if (plane){
@@ -82,13 +85,15 @@ function updatePlane(playerId,motion){
 		plane.setAttribute("pos-x", x);
 		plane.setAttribute("pos-y", y);
 	}
-    var ply = players.find(playerId);
+  var ply = players.find(playerId);
     if (ply) {
-      var planebound = {width: 40, height: 40};
-      var x = Math.min(planebound.width/2,Math.max(-planebound.width/2,(ply.getPos().x + motion.y/20)));
-      var y = Math.min(planebound.height/2,Math.max(-planebound.height/2,(ply.getPos().y - motion.z/20)));
+      var planebound = {width: 60, height: 40};
+      var x = Math.min(planebound.width/2,Math.max(-planebound.width/2,(ply.getPos().x + motion.y/25)));
+      var y = Math.min(planebound.height/2,Math.max(-planebound.height/2,(ply.getPos().y - motion.z/25)));
       var pos = new THREE.Vector3(x, y, 0);
       ply.setPos(pos);
+			var rot = new THREE.Quaternion(motion.y,motion.z,0,1);
+			ply.setRotation(rot.normalize());
     }
 };
 
