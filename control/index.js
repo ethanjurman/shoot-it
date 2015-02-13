@@ -81,7 +81,7 @@ function calibrate(){
   },500);
 }
 
-function calibrateRate(){
+window.calibrateRate = function calibrateRate(){
   calibration.rate = 0.1;
   window.setTimeout(function(){
     calibration.rate = document.getElementById("rate").innerHTML;
@@ -96,7 +96,6 @@ window.calibrateMotionStart = function calibrateMotionStart() {
   var originalButtonText = button.innerHTML;
   button.innerHTML = 'Press when all the way up';
 
-  var startPos = getCurrentMotion();
   button.onclick = function() {
     var upPos = getCurrentMotion();
     button.innerHTML = 'Press when all the way down';
@@ -114,7 +113,7 @@ window.calibrateMotionStart = function calibrateMotionStart() {
           button.innerHTML = originalButtonText;
           button.onclick = calibrateMotionStart;
 
-          calibrateFromParams(startPos, upPos, downPos, leftPos, rightPos);
+          calibrateFromParams(upPos, downPos, leftPos, rightPos);
         }
       }
     }
@@ -127,44 +126,67 @@ window.calibrateMotionStart = function calibrateMotionStart() {
 // and all the way right
 // args: center, up, down, left, right
 //         - all objects of form {x:<int>, y:<int>, z:<int>}
-function calibrateFromParams(center, up, down, left, right) {
-  var normCenter = normalize(
-    add(center, add(up, add(down, add(left, right))))
-  );
+function calibrateFromParams(up, down, left, right) {
 
   // -- Figure out which way is 'up' --
-  // project 'up' and 'down' into the plane that has center as its normal
-  var upPrime = normalize(subtract(normalize(up), normCenter));
-  var downPrime = normalize(subtract(normalize(down), normCenter));
-  // negate down's direction and average it with up to get the unit up
-  // direction
-  var upAvg = normalize(add(upPrime, negate(downPrime)));
-  // Get the max/min values of up and down
-  var maxUp = dot(upAvg, up);
-  var maxDown = dot(upAvg, down);
+  // find a normal vector for the plan in which up and down lie
+  var updownN = normalize(cross(up, down));
+  var upNorm = normalize(up);
+  var downNorm = normalize(down);
+
+  // find the angle up and down make with each other
+  var updownTheta = Math.acos(dot(upNorm, downNorm));
   calibration.motionInUpDirection = function(pos) {
-    // dot the given position with the average 'up'
-    var dotted = dot(pos, upAvg);
-    var perc = (dotted - maxDown) / (maxUp - maxDown);
+    var posNorm = normalize(pos);
+    // project into the updown plane
+    var posPrime = normalize(subtract(posNorm, scale(updownN, dot(posNorm, updownN))));
+    // find its angle with 'down'
+    var downTheta = Math.acos(dot(posPrime, downNorm));
+    var upTheta = Math.acos(dot(posPrime, upNorm));
+
+    var perc = downTheta / updownTheta;
     var ret = perc*2-1;
     return -Math.min(Math.max(ret, -1), 1); // TODO figure out why this is negative
   }
 
   // -- Figure out which way is 'left' --
   // proceed by the same method as above
-  var leftPrime = normalize(subtract(normalize(left), normCenter));
-  var rightPrime = normalize(subtract(normalize(right), normCenter));
-  var rightAvg = normalize(add(rightPrime, negate(leftPrime)));
-  var maxLeft = dot(rightAvg, left);
-  var maxRight = dot(rightAvg, right);
+  var leftrightN = normalize(corss(left, right));
+  var leftNorm = normalize(left);
+  var rightNorm = normalize(right);
+
+  var leftrightTheta = Math.acos(dot(leftNorm, rightNorm));
   calibration.motionInRightDirection = function(pos) {
-    var dotted = dot(pos, rightAvg);
-    var perc = (dotted - maxLeft) / (maxRight - maxLeft);
+    var posNorm = normalize(pos);
+    // project into the leftright plane
+    var posPrime = normalize(subtract(posNorm, scale(leftrightN, dot(posNorm, leftrightN))));
+    // find its angle with 'left'
+    var leftTheta = Math.acos(dot(posPrime, leftNorm));
+    var rightTheta = Math.acos(dot(posPrime, rightNorm));
+
+    var perc = leftTheta / leftrightTheta;
     var ret = perc*2-1;
     return Math.min(Math.max(ret, -1), 1);
   }
 }
 
+// Returns a vector of vec scaled by k
+function scale(vec, k) {
+  return {
+    x: vec.x * k,
+    y: vec.y * k,
+    z: vec.z * k
+  }
+}
+
+// Returns the cross product of two vectors
+function cross(vec1, vec2) {
+  return {
+    x: vec1.y * vec2.z - vec1.z * vec2.y,
+    y: vec1.z * vec2.x - vec1.x * vec2.z,
+    z: vec1.x * vec2.y - vec1.y * vec2.x
+  }
+}
 
 // Returns the dot product of two vectors
 function dot(vec1, vec2) {
