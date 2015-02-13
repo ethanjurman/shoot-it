@@ -27,7 +27,7 @@ var Entity = function() {
 */
 Entity.prototype.setModel = function(path, cb, cb2) {
   var mtlurl = null;
-  if (cb2) {
+  if (!(cb instanceof Function)) {
     mtlurl = cb; cb = cb2;
   }
   var self = this;
@@ -42,8 +42,14 @@ Entity.prototype.setModel = function(path, cb, cb2) {
     if (mtlurl) {
       loader = new THREE.OBJMTLLoader(); //Special, textured, snowflake
       loader.load(path, mtlurl, function(object) {
-        self._physobj = object; //Add w/o physics simulation
-        self._physobj.castShadow = true;
+        if (self.mesh) {
+          object.position.copy(self.mesh.position);
+          object.rotation.copy(self.mesh.rotation);
+          scene.remove(self.mesh);
+        }
+        self.mesh = object; //Add w/o physics simulation
+        self.mesh.castShadow = true;
+        scene.add(self.mesh);
         if (cb) cb(self);
       });
     } else {
@@ -148,7 +154,7 @@ Entity._think = function() {
     if (ent.think) {
       ent.think();
     }
-  }  
+  }
 };
 
 /**
@@ -161,7 +167,7 @@ Entity.prototype.setPos = function(vec) {
   }
   if (this.body) {
     this.body.position.set(vec.x, vec.y, vec.z);
-  }  
+  }
 };
 
 /**
@@ -181,8 +187,8 @@ Entity.prototype.setRotation = function(quat) {
   }
   if (this.mesh) {
     this.mesh.quaternion.copy(quat);
-  }  
-};  
+  }
+};
 
 /**
 * Get the entity's rotation (may error if the physobj hasn't been loaded yet)
@@ -198,7 +204,7 @@ Entity.prototype.remove = function() {
 
   if (this.onRemove)
     this.onRemove();
-  
+
   Entity._registry.splice(Entity._registry.indexOf(this), 1);
 
   world.remove(this.body);
