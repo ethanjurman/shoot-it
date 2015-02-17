@@ -12,6 +12,7 @@ store.remove = function(player) {
   if (index > -1) {
     store.players.splice(index, 1);
   }
+  player.remove();
 };
 
 store.find = function(id) {

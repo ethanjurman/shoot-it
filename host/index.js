@@ -88,16 +88,14 @@ function updatePlane(playerId,motion){
   var ply = players.find(playerId);
     if (ply) {
       var planebound = {width: 100, height: 80};
-      var x = Math.min(planebound.width/2,Math.max(-planebound.width/2,(ply.getPos().x + motion.y/25)));
-      var y = Math.min(planebound.height/2,Math.max(-planebound.height/2,(ply.getPos().y - motion.z/25)));
+      var x = Math.min(planebound.width/2,Math.max(-planebound.width/2,(ply.getPos().x + motion.y/10)));
+      var y = Math.min(planebound.height/2,Math.max(-planebound.height/2,(ply.getPos().y - motion.z/10)));
       var pos = new THREE.Vector3(x, y, 0);
-      var target = new THREE.Vector3(x + motion.y, y + motion.z, 0);
+      var target = new THREE.Vector3(motion.z, 0, motion.y);
 			ply.setPos(pos);
 			if (ply.mesh) {
-				var axis = pos.sub(target).normalize();
 				var quat = new THREE.Quaternion();
-				quat.setFromAxisAngle(axis,Math.PI*2);
-				console.log(quat);
+				quat.setFromAxisAngle(target.normalize(), -Math.PI/4);
 				ply.setRotation(quat);
 			}
     }
@@ -112,4 +110,5 @@ function removePlane(playerId){
     if (target && target.parentNode) {
 	   target.parentNode.removeChild(target);
     }
+	players.remove(players.find(playerId));
 };
