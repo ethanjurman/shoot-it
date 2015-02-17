@@ -8,14 +8,18 @@ var Player = function() {
       new THREE.BoxGeometry( 10, 10, 10 ),
       new THREE.MeshPhongMaterial({ color: 0x666666 })
   );
-  var shape = new CANNON.Box(new CANNON.Vec3(10, 10, 30));
+  var shape = new CANNON.Box(new CANNON.Vec3(10, 10, 10));
   var body = new CANNON.Body({mass: 100});
   body.addShape(shape);
   body.angularVelocity.set(0,0,0);
   body.angularDamping = 0.5;
+  console.log(body);
   this.setPhysicsBody(body);
   this.setGravity(0);
-  this.setModel('resources/ship1.obj','resources/ship1.mtl');
+  var self = this;
+  this.setModel('resources/ship1.obj','resources/ship1.mtl',function(){
+    self.mesh.scale.set(3,3,3);
+  });
 };
 Player.prototype = Object.create( Damageable.prototype );
 Player.prototype.userId = -1;

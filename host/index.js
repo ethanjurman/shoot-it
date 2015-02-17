@@ -65,8 +65,8 @@ function addPlane(playerId){
 	target.setAttributeNS(null,"stroke","black");
 	target.setAttributeNS(null,"stroke-width",2);
 	target.setAttributeNS(null,"fill","none");
-	// play.appendChild(plane);
-	// play.appendChild(target);
+	play.appendChild(plane);
+	play.appendChild(target);
 
     var ply = players.create();
     ply.userId = playerId;
@@ -92,15 +92,11 @@ function updatePlane(playerId,motion){
       var y = Math.min(planebound.height/2,Math.max(-planebound.height/2,(ply.getPos().y - motion.z/25)));
       var pos = new THREE.Vector3(x, y, 0);
       ply.setPos(pos);
-			var rot = ply.getRotation();
-			// TODO make quaternion
-			// cos(alpha/2) + unitVector * sin(alpha/2) where alpha is in radians
-			var eul = new THREE.Euler(0,0,0,'XYZ');
-			eul.setFromQuaternion(rot);
-			eul.x = (Math.PI)*motion.z*4.5/180 + Math.PI;
-			eul.y = Math.PI;
-			eul.z = (Math.PI)*motion.x*4.5/180 + Math.PI/2;
-			ply.setRotation(rot.setFromEuler(eul));
+			if (ply.mesh) {
+				var targetVector = new THREE.Vector3(x + motion.y,y + motion.z,0.3).multiplyScalar(100)
+				ply.mesh.lookAt(targetVector);
+				console.log(targetVector);
+			}
     }
 };
 
