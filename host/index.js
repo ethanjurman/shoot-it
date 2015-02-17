@@ -87,15 +87,18 @@ function updatePlane(playerId,motion){
 	}
   var ply = players.find(playerId);
     if (ply) {
-      var planebound = {width: 60, height: 40};
+      var planebound = {width: 100, height: 80};
       var x = Math.min(planebound.width/2,Math.max(-planebound.width/2,(ply.getPos().x + motion.y/25)));
       var y = Math.min(planebound.height/2,Math.max(-planebound.height/2,(ply.getPos().y - motion.z/25)));
       var pos = new THREE.Vector3(x, y, 0);
-      ply.setPos(pos);
+      var target = new THREE.Vector3(x + motion.y, y + motion.z, 0);
+			ply.setPos(pos);
 			if (ply.mesh) {
-				var targetVector = new THREE.Vector3(x + motion.y,y + motion.z,0.3).multiplyScalar(100)
-				ply.mesh.lookAt(targetVector);
-				console.log(targetVector);
+				var axis = pos.sub(target).normalize();
+				var quat = new THREE.Quaternion();
+				quat.setFromAxisAngle(axis,Math.PI*2);
+				console.log(quat);
+				ply.setRotation(quat);
 			}
     }
 };
