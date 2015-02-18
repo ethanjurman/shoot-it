@@ -12,4 +12,4 @@ Then run the start script to get the system running locally
 
 Other devices can then connect to that machines local ip address, like below:
 
-123.456.0.111**:3000/plane.html**
+123.456.0.111**:3000/control**
