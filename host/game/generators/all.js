@@ -1,3 +1,3 @@
 var Random = require('./random');
 
-module.exports = {Random};
+module.exports = {Random: Random};
