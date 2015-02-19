@@ -45,11 +45,11 @@ Entity.prototype.setModel = function(path, cb, cb2) {
         if (self.mesh) {
           object.position.copy(self.mesh.position);
           object.rotation.copy(self.mesh.rotation);
-          scene.remove(self.mesh);
+          Entity.scene.remove(self.mesh);
         }
         self.mesh = object; //Add w/o physics simulation
         self.mesh.castShadow = true;
-        scene.add(self.mesh);
+        Entity.scene.add(self.mesh);
         if (cb) cb(self);
       });
     } else {
@@ -89,14 +89,14 @@ Entity.prototype.setGeometry = function(geom, mats) {
   if (this.mesh) {
     var pos = this.getPos();
     var rot = this.getRotation();
-    scene.remove(this.mesh);
+    Entity.scene.remove(this.mesh);
     this.mesh = new THREE.Mesh(tGeom, facemat);
-    scene.add(this.mesh);
+    Entity.scene.add(this.mesh);
     this.setPos(pos);
     this.setRotation(rot);
   } else {
     this.mesh = new THREE.Mesh(tGeom, facemat); //Assume worst case for phys meshes
-    scene.add(this.mesh);
+    Entity.scene.add(this.mesh);
     this.setPos(this.pos || new THREE.Vector3());
     this.setRotation(this.rot || new THREE.Quaternion());
   }
@@ -106,7 +106,7 @@ Entity.prototype.setGeometry = function(geom, mats) {
 
 Entity.prototype.setPhysicsBody = function(body) {
   if (this.body) {
-      world.remove(this.body);
+      Entity.world.remove(this.body);
       body.gravity = this.body.gravity;
   }
   body.position.copy(this.mesh.position);
@@ -126,17 +126,15 @@ Entity.prototype.setMass = function(mass) {
 /**
 * Set the scene entities are added to on a global basis
 */
-var world = null;
 Entity.setWorld = function(o) {
-  world = o;
+  Entity.world = o;
 };
 
 /**
 * Set the scene entities are added to on a global basis
 */
-var scene = null;
 Entity.setScene = function(o) {
-  scene = o;
+  Entity.scene = o;
 };
 
 Entity._registry = [];
@@ -207,8 +205,8 @@ Entity.prototype.remove = function() {
 
   Entity._registry.splice(Entity._registry.indexOf(this), 1);
 
-  world.remove(this.body);
-  scene.remove(this.mesh);
+  Entity.world.remove(this.body);
+  Entity.scene.remove(this.mesh);
 };
 
 /**
