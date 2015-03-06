@@ -15,3 +15,7 @@ button {
   width: 32%;
   padding: 0px;
 }
+
+body {
+  margin-bottom:20px;
+}

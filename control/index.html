@@ -1,13 +1,13 @@
 <html>
   <head>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/control.js"></script>
+    <script src="/index.js"></script>
     <link rel="stylesheet" href="/control/main.css">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
     <link rel="manifest" href="manifest.json">
   </head>
   <body>
-    <button id="fire" onclick="fire()"></button>
+    <button id="fire" onclick="deviceFire()"></button>
     <div id="settings">
       count: <span id="count">0</span><br/>
       interval: <span id="interval">0</span><br/>

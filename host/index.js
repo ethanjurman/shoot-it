@@ -42,32 +42,6 @@ socket.on('fire', function(playerId){
 function addPlane(playerId){
 	var play = document.getElementById("play");
 	console.log("ADDED PLAYER");
-	var svgNS = "http://www.w3.org/2000/svg";
-	var plane = document.createElementNS(svgNS,"circle");
-	plane.setAttributeNS(null,"class","plane")
-	plane.setAttributeNS(null,"player-id",playerId);
-	plane.setAttributeNS(null,"cx","50%");
-	plane.setAttributeNS(null,"cy","50%");
-	plane.setAttributeNS(null,"r",20);
-	plane.setAttributeNS(null,"transform","translate(0 0)");
-	plane.setAttributeNS(null,"stroke","black");
-	plane.setAttributeNS(null,"stroke-width",3);
-	plane.setAttributeNS(null,"fill","red");
-	plane.setAttributeNS(null,"pos-x",0); // keep track of x position
-	plane.setAttributeNS(null,"pos-y",0); // keep track of y position
-	var target = document.createElementNS(svgNS,"circle");
-	target.setAttributeNS(null,"class","target");
-	target.setAttributeNS(null,"player-id",playerId);
-	target.setAttributeNS(null,"cx","50%");
-	target.setAttributeNS(null,"cy","50%");
-	target.setAttributeNS(null,"r",15);
-	target.setAttributeNS(null,"transform","translate(0 0)");
-	target.setAttributeNS(null,"stroke","black");
-	target.setAttributeNS(null,"stroke-width",2);
-	target.setAttributeNS(null,"fill","none");
-	play.appendChild(plane);
-	play.appendChild(target);
-
     var ply = players.create();
     ply.userId = playerId;
     ply.setPos(new THREE.Vector3(0,0,0));

@@ -23,7 +23,7 @@ app.get('/control/main.css', function(req, res){
 });
 
 app.get('/host.js', browserify('./host/index.js', {transforms: [to5ify]}));
-app.get('/control.js', browserify('./control/index.js', {transforms: [to5ify]}));
+app.get('/index.js', browserify('./control/index.js', {transforms: [to5ify]}));
 
 app.get('/manifest.json', function(req, res){
   res.sendFile(__dirname + '/manifest.json');
@@ -51,6 +51,6 @@ io.on('connection', function(socket){
   });
 });
 
-http.listen(3000, function(){
-  console.log('listening on *:3000');
+http.listen(80, function(){
+  console.log('listening on *:80');
 });

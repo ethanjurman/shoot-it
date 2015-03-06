@@ -25,19 +25,17 @@ if (window.DeviceMotionEvent != undefined) {
     document.getElementById("count").innerHTML = 0 || count;
   }
 }
-
-function invertX(){
+invertX = function(){
   invert.x = !invert.x;
 }
-function invertY(){
+invertY = function(){
   invert.y = !invert.y;
 }
-function invertZ(){
+invertZ = function(){
   invert.z = !invert.z;
 }
 
-var fireTimer = null;
-function fire(){
+deviceFire = function(){
   var socket = io();
   socket.emit("fire");
   var fireButton = document.getElementById("fire");
@@ -46,20 +44,11 @@ function fire(){
     fireButton.style.background = "darkred";
   },250);
 }
-// If fire event can be triggered when held down, maybe we can do this
-function startFire(evt){
-  evt.preventDefault();
-  fireTimer = setInterval("fire()",250);
-}
-function stopFire(evt){
-  evt.preventDefault();
-  window.clearInterval(fireTimer)
-}
-function updatePlane(motion){
+updatePlane = function(motion){
   socket.emit("update plane",motion); // this goes to index.js
 }
 
-function calibrate(){
+calibrate = function(){
   calibration.x = 0;
   calibration.y = 0;
   calibration.z = 0;
@@ -73,7 +62,7 @@ function calibrate(){
   },500);
 }
 
-function calibrateRate(){
+calibrateRate = function(){
   calibration.rate = 0.1;
   window.setTimeout(function(){
     calibration.rate = document.getElementById("rate").innerHTML;
