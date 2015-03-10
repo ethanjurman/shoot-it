@@ -32,18 +32,16 @@ socket.on('remove plane', function(p){
 });
 
 socket.on('fire', function(playerId){
-	var plane = document.querySelector('.plane[player-id="'+playerId+'"]');
 	// A player (playerId) hit FIRE!!
+	players.find(playerId).fire();
 });
 
 function addPlane(playerId){
-	var play = document.getElementById("play");
-	console.log("ADDED PLAYER");
-	var color = Math.floor(0xffffff*Math.random());
-    var ply = players.create(color); // random color new player
-		console.log("%c " + color.toString(16),"color: #"+color.toString(16))
-    ply.userId = playerId;
-    ply.setPos(new THREE.Vector3(0,0,0));
+	var color = Math.floor(0xffffff*Math.random()); // random player color
+  var ply = players.create(color); // random color new player
+	console.log("%c ADDED PLAYER","color: #"+color.toString(16));
+  ply.userId = playerId;
+  ply.setPos(new THREE.Vector3(0,0,0));
 };
 
 function updatePlane(playerId,motion){
@@ -75,13 +73,5 @@ function updatePlane(playerId,motion){
 };
 
 function removePlane(playerId){
-	var plane = document.querySelector('.plane[player-id="'+playerId+'"]');
-    if (plane && plane.parentNode) {
-      plane.parentNode.removeChild(plane);
-    }
-	var target = document.querySelector('.target[player-id="'+playerId+'"]');
-    if (target && target.parentNode) {
-	   target.parentNode.removeChild(target);
-    }
 	players.remove(players.find(playerId));
 };

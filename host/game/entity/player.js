@@ -17,17 +17,23 @@ var Player = function(color) {
   this.setPhysicsBody(body);
   this.setGravity(0);
   var self = this;
-  var color = color;
+  this.color = color;
   this.setModel('resources/ship1.obj','resources/ship1.mtl',function(){
     self.mesh.scale.set(3,3,3);
-    self.setMaterial(new THREE.MeshLambertMaterial({ color: color })); // change to correct color
+    self.setMaterial(new THREE.MeshLambertMaterial({ color: self.color })); // change to correct color
   });
 };
+
 Player.prototype = Object.create( Damageable.prototype );
 Player.prototype.userId = -1;
 
 Player.prototype.think = function() {
   //console.log(this.getPos());
+};
+
+Player.prototype.fire = function(){
+  // fires a laser bullet thingy
+  console.log("FIRING");
 };
 
 module.exports = Player;
