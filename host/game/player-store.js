@@ -1,8 +1,8 @@
 var Player = require('./entity/player');
 var store = { players: [] };
 
-store.create = function() {
-  var p = new Player();
+store.create = function(color) {
+  var p = new Player(color);
   store.players.push(p);
   return p;
 };

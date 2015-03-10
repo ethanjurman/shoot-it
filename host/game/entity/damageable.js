@@ -23,5 +23,5 @@ Damageable.prototype.getHealth = function() {
 Damageable.prototype.setHealth = function(hp) {
   this.health = hp;
 };
-  
+
 module.exports = Damageable;

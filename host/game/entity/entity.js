@@ -72,11 +72,9 @@ Entity.prototype.setModel = function(path, cb, cb2) {
 * Set the raw geometry object being used in the entity
 */
 Entity.prototype.setGeometry = function(geom, mats) {
-  var facemat = null;
+  var facemat = new THREE.MeshLambertMaterial({ color: 0xdedede });
   if (mats && mats.length>0) {
     facemat = mats[0];
-  } else {
-    facemat = new THREE.MeshLambertMaterial({ color: 0xdedede });
   }
 
   var tGeom = null;
@@ -90,18 +88,19 @@ Entity.prototype.setGeometry = function(geom, mats) {
     var pos = this.getPos();
     var rot = this.getRotation();
     scene.remove(this.mesh);
-    this.mesh = new THREE.Mesh(tGeom, facemat);
-    scene.add(this.mesh);
-    this.setPos(pos);
-    this.setRotation(rot);
-  } else {
-    this.mesh = new THREE.Mesh(tGeom, facemat); //Assume worst case for phys meshes
-    scene.add(this.mesh);
-    this.setPos(this.pos || new THREE.Vector3());
-    this.setRotation(this.rot || new THREE.Quaternion());
   }
+  this.mesh = new THREE.Mesh(tGeom, facemat); //Assume worst case for phys meshes
+  scene.add(this.mesh);
+  this.setPos(this.pos || new THREE.Vector3());
+  this.setRotation(this.rot || new THREE.Quaternion());
   this.mesh.castShadow = true;
-  //this.mesh.recieveShadow = true; //Self-shadowing makes it slow on bad machines
+};
+
+Entity.prototype.setMaterial = function( mat ) {
+  this.mesh.traverse(function(child){
+    child.material = mat;
+    child.material.needsUpdates = true;
+  });
 };
 
 Entity.prototype.setPhysicsBody = function(body) {

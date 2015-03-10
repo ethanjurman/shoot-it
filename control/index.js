@@ -17,7 +17,7 @@ if (window.DeviceMotionEvent != undefined) {
     document.getElementById("y").innerHTML = 0 || motion.y;
     document.getElementById("z").innerHTML = 0 || motion.z;
     document.getElementById("rate").innerHTML = 0 || rate;
-    if ( rate > calibration.rate){
+    if ((rate > calibration.rate) || (rate == 0)){
       // threshold for updating plane and we're due for a update
       updatePlane(motion);
     }

@@ -33,16 +33,15 @@ socket.on('remove plane', function(p){
 
 socket.on('fire', function(playerId){
 	var plane = document.querySelector('.plane[player-id="'+playerId+'"]');
-	plane.setAttributeNS(null,"fill","blue");
-	window.setTimeout(function(){
-		plane.setAttributeNS(null,"fill","red");
-	},250);
+	// A player (playerId) hit FIRE!!
 });
 
 function addPlane(playerId){
 	var play = document.getElementById("play");
 	console.log("ADDED PLAYER");
-    var ply = players.create();
+	var color = Math.floor(0xffffff*Math.random());
+    var ply = players.create(color); // random color new player
+		console.log("%c " + color.toString(16),"color: #"+color.toString(16))
     ply.userId = playerId;
     ply.setPos(new THREE.Vector3(0,0,0));
 };

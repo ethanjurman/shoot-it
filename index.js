@@ -43,11 +43,10 @@ io.on('connection', function(socket){
     io.emit('remove plane',playerId);
   });
   socket.on('fire', function(){
-    console.log("fire from " + playerId)
     io.emit('fire',playerId);
   });
   socket.on('update plane', function(motion){
-    io.emit('update plane',[playerId,motion]); // this goes to main.js
+    io.emit('update plane',[playerId,motion]); // this goes to index.js on host
   });
 });
 
