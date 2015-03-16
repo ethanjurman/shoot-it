@@ -36,4 +36,32 @@ Player.prototype.fire = function(){
   console.log("FIRING");
 };
 
+Player.prototype.applyMotion = function(motion) {
+  var planebound = {width: 100, height: 80};
+  var x = Math.min(planebound.width/2,Math.max(-planebound.width/2,(this.getPos().x + motion.y/10)));
+  var y = Math.min(planebound.height/2,Math.max(-planebound.height/2,(this.getPos().y - motion.z/10)));
+  var pos = new THREE.Vector3(x, y, 0);
+  var target = new THREE.Vector3(motion.z, 0, motion.y);
+  this.setPos(pos);
+  if (this.mesh) {
+      var quat = new THREE.Quaternion();
+      quat.setFromAxisAngle(target.normalize(), -Math.PI/4);
+      this.setRotation(quat);
+  }
+};
+
+Player.prototype.updateDOMHUD = function(motion) {
+  var playerId = this.userId;
+  var plane = document.querySelector('.plane[player-id="'+playerId+'"]');
+  var target = document.querySelector('.target[player-id="'+playerId+'"]');
+  if (plane){
+      var x = Math.min(bounds.width/2,Math.max(-bounds.width/2,(parseInt(plane.getAttribute("pos-x")) + motion.y)));
+      var y = Math.min(bounds.height/2,Math.max(-bounds.height/2,(parseInt(plane.getAttribute("pos-y")) + motion.z)));
+      plane.setAttribute("transform", "translate(" + x + " " + y + ")");
+      target.setAttribute("transform", "translate(" + (x + motion.y*3) + " " + (y + motion.z*5) + ")");
+      plane.setAttribute("pos-x", x);
+      plane.setAttribute("pos-y", y);
+  }
+};
+
 module.exports = Player;
