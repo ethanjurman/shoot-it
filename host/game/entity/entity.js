@@ -1,6 +1,8 @@
 var CANNON = require('../libs/cannon');
 var THREE = require('../libs/three');
 var OBJMTLLoader = require('../libs/loaders/OBJMTLLoader');
+var hook = require('../hook');
+var global = require('../global');
 /*
 Entity.js - A Wrapper around Cannon.js and Three.js that provides a
   game-esque 3d entity system
@@ -147,7 +149,7 @@ Entity.setScene = function(o) {
 };
 
 Entity._registry = [];
-Entity._think = function() {
+hook.add('think', function(deltatime) {
   for (var i=0; i<Entity._registry.length; i++) {
     var ent = Entity._registry[i];
     if (ent.mesh && ent.body) {
@@ -159,10 +161,10 @@ Entity._think = function() {
   for (var i=0; i<Entity._registry.length; i++) {
     var ent = Entity._registry[i];
     if (ent.think) {
-      ent.think();
+      ent.think(deltatimex );
     }
   }
-};
+});
 
 /**
 * Set the entity's position
@@ -240,7 +242,7 @@ Entity.prototype.setGravity = function(g) {
 * Get the forward vector of the object in world coordinates
 */
 Entity.prototype.Forward = function() {
-  var local = new THREE.Vector3(0,0,-1);
+  var local = global.forward.clone();
   var world = local.applyMatrix4(this.mesh.matrixWorld);
   var dir = world.sub(this.mesh.position).normalize();
 

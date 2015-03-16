@@ -2,11 +2,12 @@ var THREE = require('./libs/three');
 var CANNON = require('./libs/cannon');
 var Entity = require('./entity/entity');
 var Level = require('./level');
+var hook = require('./hook');
 
 var Game = function() {
   this.initPhysics();
   this.initScene();
-  
+
   this.level = new Level();
 
   var self = this;
@@ -18,10 +19,10 @@ var Game = function() {
 };
 
 Game.prototype.render = function() {
-  this.world.step((Date.now() - this.time)/16.666);
+  var delta = Date.now() - this.time;
+  this.world.step(delta/16.666);
 
-  Entity._think(); //Copy all physcoords to world coords, call any think hooks
-
+  hook.call('think', delta); //Copy all physcoords to world coords, call any think hooks
   this.renderer.render(this.scene, this.camera);
 
   this.time = Date.now();

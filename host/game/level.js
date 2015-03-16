@@ -1,6 +1,8 @@
 var generators = require('./generators/all');
 var THREE = require('./libs/three');
 var Entity = require('./entity/entity');
+var hook = require('./hook');
+var global = require('./global');
 
 var LEVEL_SEGMENTS = 60;
 
@@ -21,6 +23,21 @@ var Level = function(seed) {
   this.line = new THREE.Line( geometry, material );
   
   Entity.scene.add(this.line);
+  
+  this.plane = { position: new THREE.Vector3(), rotation: new THREE.Quaternion() }
+  this.plane.position.set(0,0,0);
+  this.plane.rotation.set(0,0,0,0);
+  
+  this.distance = 0;
+  this.velocity = 0;
+  this.timescale = 1/10;
+  var self = this;
+  hook.add('think', function(delta) {
+    self.distance += delta * self.velocity;
+    var t = self.distance*self.timescale;
+    self.plane.position = self.path.getPointAt(t);
+    self.plane.rotation.setFromUnitVectors(global.forward, self.path.getTangentAt(t));
+  });
 };
 
 Level.prototype = {};
