@@ -3,5 +3,6 @@
   "name": "Shooting Gallery Extravaganza",
   "display": "standalone",
   "display": "fullscreen",
+  "fullscreen": true,
   "orientation": "landscape"
 }

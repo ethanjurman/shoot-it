@@ -14,6 +14,10 @@ app.get('/control', function(req, res){
   res.sendFile(__dirname + '/control/index.html');
 });
 
+app.get('/config', function(req, res){
+  res.sendFile(__dirname + '/control/config.html');
+});
+
 app.get('/main.css', function(req, res){
   res.sendFile(__dirname + '/host/main.css');
 });
@@ -24,6 +28,7 @@ app.get('/control/main.css', function(req, res){
 
 app.get('/host.js', browserify('./host/index.js', {transforms: [to5ify]}));
 app.get('/index.js', browserify('./control/index.js', {transforms: [to5ify]}));
+app.get('/config.js', browserify('./control/config.js', {transforms: [to5ify]}));
 
 app.get('/manifest.json', function(req, res){
   res.sendFile(__dirname + '/manifest.json');

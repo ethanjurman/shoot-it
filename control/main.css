@@ -1,9 +1,35 @@
 #fire {
+  /*position: fixed;*/
   text-align: center;
   width: 100%;
   height: 100%;
   background: darkred;
   border: none;
+}
+
+#gauge-wrapper {
+  float: right;
+  line-height: 200px;
+}
+#gauge {
+  line-height: 1em;
+  float: right;
+  width: 200px;
+  height: 200px;
+  margin: 5px;
+  border: black solid;
+  position:relative;
+}
+#gauge-ball {
+  position: absolute;
+  background: red;
+  border-radius: 100%;
+  width: 20px;
+  height: 20px;
+}
+#settings {
+  width: 300px;
+  margin: 5px;
 }
 
 button {
@@ -18,4 +44,61 @@ button {
 
 body {
   margin-bottom:20px;
+  /*overflow:hidden;*/
+}
+
+.viewport {
+    width: 320px;
+    overflow: hidden;
+    margin: 0 auto;
+    -webkit-transform: translateZ(0); /* Optional: When heavy at iOS6+ */
+}
+
+/* stuff for flipsnap */
+.flipsnap {
+  width: 2095px;
+  padding-left: 45px;
+}
+
+.flipsnap:after {
+    content: '';
+    display: block;
+    clear: both;
+    height: 0;
+}
+.tint {
+  width: 255px;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+}
+.ship-img {
+  height: calc(100% - 216px);
+  position: fixed;
+  bottom: 0;
+  right: 0;
+}
+.ship-img:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background: rgba(0,255,255, 0.5);
+}
+.item {
+  width: 200px;
+  margin: 0 10px;
+  font-size: 50px;
+  text-align: center;
+  padding: 50px 0;
+  background: #EFEFEF;
+  border: 5px solid #999;
+  border-radius: 40px;
+  float: left;
+}
+.selected {
+  border: 5px solid #090;
 }

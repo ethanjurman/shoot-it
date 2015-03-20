@@ -6,11 +6,17 @@ var QRCode = require('./game/libs/qrcode.min');
 var socket = io();
 var bounds;
 window.onload = function(){
-	var qrcode = window.location.href + "control";
-	new QRCode(document.getElementById("qr_code"), qrcode);
-	document.getElementById("qr_code").appendChild(
-		document.createTextNode(qrcode));
-	socket.emit('update plane');
+	// var qrcode = window.location.href + "control";
+	// new QRCode(document.getElementById("qr_code_play"), qrcode);
+	// document.getElementById("qr_code_play").appendChild(document.createTextNode(qrcode));
+	var qrcodeControl = window.location.href + "control";
+	var qrcodeConfig = window.location.href + "config";
+	var qrEleControl = document.getElementById("qr_code_play");
+	var qrEleConfig = document.getElementById("qr_code_config");
+	new QRCode(qrEleControl, qrcodeControl);
+	qrEleControl.appendChild(document.createTextNode(qrcodeControl));
+	new QRCode(qrEleConfig, qrcodeConfig);
+	qrEleConfig.appendChild(document.createTextNode(qrcodeConfig));
 	bounds = document.getElementById('play').getBoundingClientRect();
     var g = new Game();
 };

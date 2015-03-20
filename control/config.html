@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <script src="/config.js"></script>
+    <link rel="stylesheet" href="/control/main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+  </head>
+  <body>
+    <div id="gauge-wrapper" style="vertical-align:middle;">
+      <div id="gauge">
+        <span style="position:absolute;top:100px;left:-20px">z</span>
+        <span style="position:absolute;top:210px;left:100px;">y</span>
+        <div id="gauge-ball"></div>
+      </div>
+    </div>
+    <div id="settings">
+      count: <span id="count">0</span><br/>
+      interval: <span id="interval">0</span><br/>
+      x: <span id="x">0</span><br/>
+      y: <span id="y">0</span><br/>
+      z: <span id="z">0</span><br/>
+      rate: <span id="rate">0</span><br/>
+      <!-- <button class="invert" onclick="invertX()">INVERT X</button> -->
+      <button class="invert" onclick="invertY()">INVERT Y</button>
+      <button class="invert" onclick="invertZ()">INVERT Z</button>
+    </div>
+    <div class="viewport">
+      <div class="flipsnap">
+        <div class="item" onclick="selectItem(event);" style="background:#880000;">.</div>
+        <div class="item" onclick="selectItem(event);" style="background:#008800;">.</div>
+        <div class="item" onclick="selectItem(event);" style="background:#000088;">.</div>
+        <div class="item" onclick="selectItem(event);" style="background:#cccc00;">.</div>
+        <div class="item" onclick="selectItem(event);" style="background:#880088;">.</div>
+        <div class="item" onclick="selectItem(event);" style="background:#008888;">.</div>
+        <div class="item" onclick="selectItem(event);" style="background:#000000;">.</div>
+        <div class="item" onclick="selectItem(event);" style="background:#888888;">.</div>
+        <div class="item" onclick="selectItem(event);" style="background:#cccccc;">.</div>
+      </div>
+    </div>
+    <div class="tint">
+      <img class="ship-img" src="./resources/player-ship-mask.png" alt="ship"/>
+      <img class="ship-img" src="./resources/player-ship.png" alt="ship"/>
+    </div>
+  </body>
+</html>
