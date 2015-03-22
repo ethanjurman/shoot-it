@@ -54,5 +54,5 @@ fullscreenToggle = function(){
 
 window.onload = function(){
   var socket = io();
-  socket.emit('add plane');
+  socket.emit('add plane',localStorage.getItem('color')||'0x777777');
 }

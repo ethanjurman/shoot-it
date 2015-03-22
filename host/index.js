@@ -6,9 +6,6 @@ var QRCode = require('./game/libs/qrcode.min');
 var socket = io();
 var bounds;
 window.onload = function(){
-	// var qrcode = window.location.href + "control";
-	// new QRCode(document.getElementById("qr_code_play"), qrcode);
-	// document.getElementById("qr_code_play").appendChild(document.createTextNode(qrcode));
 	var qrcodeControl = window.location.href + "control";
 	var qrcodeConfig = window.location.href + "config";
 	var qrEleControl = document.getElementById("qr_code_play");
@@ -42,8 +39,10 @@ socket.on('fire', function(playerId){
 	players.find(playerId).fire();
 });
 
-function addPlane(playerId){
-	var color = Math.floor(0xffffff*Math.random()); // random player color
+function addPlane(playerInfo){
+	var playerId = playerInfo.playerId;
+	var color = Number(playerInfo.color);
+	console.log(playerInfo)
   var ply = players.create(color); // random color new player
 	console.log("%c ADDED PLAYER","color: #"+color.toString(16));
   ply.userId = playerId;
