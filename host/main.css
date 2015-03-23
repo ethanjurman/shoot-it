@@ -11,15 +11,27 @@ canvas {
   z-index: -100;
 }
 
-#qr_code {
-  position: fixed;
-  bottom: 0px;
-  width: 100%;
-  padding: 10px;
-  text-align: center;
+#qr_code_play {
+  left: 0px;
+}
+#qr_code_play > img {
+  border: lightgreen solid;
 }
 
-#qr_code > img {
+#qr_code_config {
+  right: 0px;
+}
+#qr_code_config > img {
+  border: yellow solid;
+}
+
+.qr_code {
+  position: fixed;
+  bottom: 0px;
+  padding: 10px;
+}
+
+.qr_code > img {
   height: 100px;
   margin-right: auto;
   margin-left: auto;

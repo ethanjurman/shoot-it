@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <script src="/config.js"></script>
+    <link rel="stylesheet" href="/control/main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+  </head>
+  <body>
+    <div class="rotate3d"></div>
+
+    <div id="wizard-01">
+      <button class="invert" onclick="invertY()"> Invert </button>
+      <div class="instruction"> Tilt Your Device Left and Right </div>
+      <button class="continue" data-next="wizard-02" onclick="continueWizard(event)"> Continue </button>
+    </div>
+
+    <div id="wizard-02" style="display:none;">
+      <button class="back" data-next="wizard-01" onclick="continueWizard(event)"> Back </button>
+      <button class="invert" onclick="invertZ()"> Invert </button>
+      <div class="instruction"> Tilt Your Device Up and Down </div>
+      <button class="continue" data-next="wizard-03" onclick="continueWizard(event)"> Continue </button>
+    </div>
+
+    <div id="wizard-03" style="display:none;">
+      <button class="back" data-next="wizard-02" onclick="continueWizard(event)"> Back </button>
+      <div class="ship-select"> Swipe to Change Color </div>
+      <div class="viewport">
+        <div class="flipsnap"></div>
+      </div>
+      <button class="continue" onclick="window.location.href = '/control';"> Play </button>
+    </div>
+  </body>
+</html>

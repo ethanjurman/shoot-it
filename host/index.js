@@ -6,11 +6,14 @@ var QRCode = require('./game/libs/qrcode.min');
 var socket = io();
 var bounds;
 window.onload = function(){
-	var qrcode = window.location.href + "control";
-	new QRCode(document.getElementById("qr_code"), qrcode);
-	document.getElementById("qr_code").appendChild(
-		document.createTextNode(qrcode));
-	socket.emit('update plane');
+	var qrcodeControl = window.location.href + "control";
+	var qrcodeConfig = window.location.href + "config";
+	var qrEleControl = document.getElementById("qr_code_play");
+	var qrEleConfig = document.getElementById("qr_code_config");
+	new QRCode(qrEleControl, qrcodeControl);
+	qrEleControl.appendChild(document.createTextNode(qrcodeControl));
+	new QRCode(qrEleConfig, qrcodeConfig);
+	qrEleConfig.appendChild(document.createTextNode(qrcodeConfig));
 	bounds = document.getElementById('play').getBoundingClientRect();
     var g = new Game();
 };
@@ -36,8 +39,10 @@ socket.on('fire', function(playerId){
 	players.find(playerId).fire();
 });
 
-function addPlane(playerId){
-	var color = Math.floor(0xffffff*Math.random()); // random player color
+function addPlane(playerInfo){
+	var playerId = playerInfo.playerId;
+	var color = Number(playerInfo.color);
+	console.log(playerInfo)
   var ply = players.create(color); // random color new player
 	console.log("%c ADDED PLAYER","color: #"+color.toString(16));
   ply.userId = playerId;
