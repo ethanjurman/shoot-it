@@ -6,28 +6,26 @@
   </head>
   <body>
     <div class="rotate3d"></div>
+
     <div id="wizard-01">
       <button class="invert" onclick="invertY()"> Invert </button>
-      <p class="instruction"> Tilt Your Device Left and Right </p>
+      <div class="instruction"> Tilt Your Device Left and Right </div>
       <button class="continue" data-next="wizard-02" onclick="continueWizard(event)"> Continue </button>
     </div>
+
     <div id="wizard-02" style="display:none;">
       <button class="back" data-next="wizard-01" onclick="continueWizard(event)"> Back </button>
-
       <button class="invert" onclick="invertZ()"> Invert </button>
-      <p class="instruction"> Tilt Your Device Up and Down </p>
+      <div class="instruction"> Tilt Your Device Up and Down </div>
       <button class="continue" data-next="wizard-03" onclick="continueWizard(event)"> Continue </button>
     </div>
-    <div id="wizard-03" style="display:none;background:white;">
+
+    <div id="wizard-03" style="display:none;">
       <button class="back" data-next="wizard-02" onclick="continueWizard(event)"> Back </button>
-      <p class="ship-select"> Select Your Ship </p>
-
+      <div class="ship-select"> Swipe to Change Color </div>
       <div class="viewport">
-        <div class="flipsnap">
-          <div class="item" data-color="0x777777" style="background:#777777;"></div>
-        </div>
+        <div class="flipsnap"></div>
       </div>
-
       <button class="continue" onclick="window.location.href = '/control';"> Play </button>
     </div>
   </body>

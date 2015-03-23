@@ -2,9 +2,9 @@ var invert = {
   x:(localStorage.getItem('inv_x') === 'true') || false,
   y:(localStorage.getItem('inv_y') === 'true') || false,
   z:(localStorage.getItem('inv_z') === 'true') || false};
+var motion = {x:0,y:0,z:0};
 var count = 0; // trigger an event if the count
 if (window.DeviceMotionEvent != undefined) {
-  var motion = {}
   var socket = io();
   window.ondevicemotion = function(e) {
     count++;

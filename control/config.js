@@ -6,12 +6,12 @@ var invert = {
   x:(localStorage.getItem('inv_x') === 'true') || false,
   y:(localStorage.getItem('inv_y') === 'true') || false,
   z:(localStorage.getItem('inv_z') === 'true') || false};
+var motion = {x:0,y:0,z:0};
 var currentScreen = "wizard-01"; // starting screen
 var count = 0; // trigger an event if the count
 if (window.DeviceMotionEvent != undefined) {
   window.ondevicemotion = function(e) {
     count++;
-    motion = {};
     // TODO seems like the inverts are inverted?
     motion.x = (!invert.x ? -1 : 1) * (e.accelerationIncludingGravity.x*2).toFixed() / 5;
     motion.y = (!invert.y ? -1 : 1) * (e.accelerationIncludingGravity.y*2).toFixed() / 5;
@@ -42,11 +42,11 @@ continueWizard = function(e){
 load3d = function(){
   var scene = new THREE.Scene();
   var camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1, 1000 );
-  var renderer = new THREE.WebGLRenderer();
+  var renderer = new THREE.WebGLRenderer( { alpha: true } );
   renderer.setSize( window.innerWidth / 2, window.innerWidth / 2 );
-  renderer.setClearColor( 0xffffff, 1);
+  renderer.setClearColor( 0x000000, 0 ); // alpha background
   document.querySelector('.rotate3d').appendChild( renderer.domElement );
-  renderer.domElement.style.width = "100%";
+  renderer.domElement.style.width = "100%"; // 100% of the canvas width and height
   renderer.domElement.style.height = "100%";
 
   var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.9 );
