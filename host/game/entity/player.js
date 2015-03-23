@@ -30,7 +30,7 @@ Player.prototype.userId = -1;
 
 Player.prototype.think = function() {
   if (this.motion) {
-    this.applyMotion(this.motion);
+    this.setPos(this.applyMotion(this.motion));
   }
 };
 
@@ -45,13 +45,13 @@ Player.prototype.applyMotion = function(motion) {
   var y = Math.min(planebound.height/2,Math.max(-planebound.height/2,(this.getPos().y - motion.z/10)));
   var pos = new THREE.Vector3(x, y, 0);
   var target = new THREE.Vector3(motion.z, 0, motion.y);
-  this.setPos(pos);
   if (this.mesh) {
       var quat = new THREE.Quaternion();
       quat.setFromAxisAngle(target.normalize(), -Math.PI/4);
       this.setRotation(quat);
   }
   this.motion = motion;
+  return pos;
 };
 
 module.exports = Player;
