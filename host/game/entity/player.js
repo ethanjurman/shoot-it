@@ -22,13 +22,16 @@ var Player = function(color) {
     self.mesh.scale.set(3,3,3);
     self.setMaterial(new THREE.MeshLambertMaterial({ color: self.color })); // change to correct color
   });
+  this.motion = null;
 };
 
 Player.prototype = Object.create( Damageable.prototype );
 Player.prototype.userId = -1;
 
 Player.prototype.think = function() {
-  //console.log(this.getPos());
+  if (this.motion) {
+    this.applyMotion(this.motion);
+  }
 };
 
 Player.prototype.fire = function(){
@@ -48,20 +51,7 @@ Player.prototype.applyMotion = function(motion) {
       quat.setFromAxisAngle(target.normalize(), -Math.PI/4);
       this.setRotation(quat);
   }
-};
-
-Player.prototype.updateDOMHUD = function(motion) {
-  var playerId = this.userId;
-  var plane = document.querySelector('.plane[player-id="'+playerId+'"]');
-  var target = document.querySelector('.target[player-id="'+playerId+'"]');
-  if (plane){
-      var x = Math.min(bounds.width/2,Math.max(-bounds.width/2,(parseInt(plane.getAttribute("pos-x")) + motion.y)));
-      var y = Math.min(bounds.height/2,Math.max(-bounds.height/2,(parseInt(plane.getAttribute("pos-y")) + motion.z)));
-      plane.setAttribute("transform", "translate(" + x + " " + y + ")");
-      target.setAttribute("transform", "translate(" + (x + motion.y*3) + " " + (y + motion.z*5) + ")");
-      plane.setAttribute("pos-x", x);
-      plane.setAttribute("pos-y", y);
-  }
+  this.motion = motion;
 };
 
 module.exports = Player;
