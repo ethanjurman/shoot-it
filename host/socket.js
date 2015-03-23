@@ -3,7 +3,6 @@ var THREE = require('./game/libs/three');
 
 var socket = io();
 
-
 socket.on('add plane', function(player){
 	var color = Number(player.color);
   var ply = players.create(color); // random color new player
@@ -18,10 +17,8 @@ socket.on('update plane', function(data){
       motion = data[1],
       ply = players.find(id);
   if (!ply) throw new Error('Got update for nonexistant player!');
-
   ply.updateDOMHUD(motion);
   ply.applyMotion(motion);
-
 });
 
 socket.on('remove plane', function(id){
