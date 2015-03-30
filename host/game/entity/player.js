@@ -22,18 +22,36 @@ var Player = function(color) {
     self.mesh.scale.set(3,3,3);
     self.setMaterial(new THREE.MeshLambertMaterial({ color: self.color })); // change to correct color
   });
+  this.motion = null;
 };
 
 Player.prototype = Object.create( Damageable.prototype );
 Player.prototype.userId = -1;
 
 Player.prototype.think = function() {
-  //console.log(this.getPos());
+  if (this.motion) {
+    this.setPos(this.applyMotion(this.motion));
+  }
 };
 
 Player.prototype.fire = function(){
   // fires a laser bullet thingy
   console.log("FIRING");
+};
+
+Player.prototype.applyMotion = function(motion) {
+  var planebound = {width: 100, height: 80};
+  var x = Math.min(planebound.width/2,Math.max(-planebound.width/2,(this.getPos().x + motion.y/10)));
+  var y = Math.min(planebound.height/2,Math.max(-planebound.height/2,(this.getPos().y - motion.z/10)));
+  var pos = new THREE.Vector3(x, y, 0);
+  var target = new THREE.Vector3(motion.z, 0, motion.y);
+  if (this.mesh) {
+      var quat = new THREE.Quaternion();
+      quat.setFromAxisAngle(target.normalize(), -Math.PI/4);
+      this.setRotation(quat);
+  }
+  this.motion = motion;
+  return pos;
 };
 
 module.exports = Player;
