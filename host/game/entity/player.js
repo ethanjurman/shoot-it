@@ -1,9 +1,10 @@
 var Damageable = require('./damageable');
 var THREE = require('../libs/three');
 var CANNON = require('../libs/cannon');
+var Bullet = require('./bullet');
 
 var Player = function(color) {
-  Damageable.call(this, 100);
+  Damageable.call(this, 3);
   // base square ... not in use anymore?
   this.setGeometry(
       new THREE.BoxGeometry( 10, 10, 10 ),
@@ -23,6 +24,7 @@ var Player = function(color) {
     self.setMaterial(new THREE.MeshLambertMaterial({ color: self.color })); // change to correct color
   });
   this.motion = null;
+  this.firing = false; // when set to true, do fire action, then set to false
 };
 
 Player.prototype = Object.create( Damageable.prototype );
@@ -32,12 +34,21 @@ Player.prototype.think = function() {
   if (this.motion) {
     this.setPos(this.applyMotion(this.motion));
   }
+  if (this.firing) {
+    this.fireProjectile();
+    this.firing = false;
+  }
 };
 
 Player.prototype.fire = function(){
-  // fires a laser bullet thingy
-  console.log("FIRING");
+  // sets the player to fire a projectile
+  this.firing = true;
 };
+
+Player.prototype.fireProjectile = function(){
+  // fires the projectile once
+  new Bullet(this.getPos());
+}
 
 Player.prototype.applyMotion = function(motion) {
   var planebound = {width: 100, height: 80};
