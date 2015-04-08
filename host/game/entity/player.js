@@ -47,7 +47,7 @@ Player.prototype.fire = function(){
 
 Player.prototype.fireProjectile = function(){
   // fires the projectile once
-  new Bullet(this.getPos());
+  new Bullet(this.getPos(), new THREE.Vector3(this.motion.y,-this.motion.z,-5).normalize());
 }
 
 Player.prototype.applyMotion = function(motion) {

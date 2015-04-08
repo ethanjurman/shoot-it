@@ -27,7 +27,7 @@ deviceFire = function(){
   socket.emit("fire");
   var fireButton = document.getElementById("fire");
   fireButton.style.background = "darkblue";
-  window.navigator.vibrate(50); // vibrate for 50ms
+  window.navigator.vibrate(20); // vibrate for 50ms
 
   window.setTimeout(function(){
     fireButton.style.background = "darkred";
