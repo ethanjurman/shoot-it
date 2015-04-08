@@ -12,6 +12,11 @@ var Bullet = function(position, angle) {
   this.angle = angle;
   var shape = new CANNON.Box(new CANNON.Vec3(1, 1, 1));
   var body = new CANNON.Body({mass: 1});
+  body.addShape(shape);
+  body.angularVelocity.set(0,0,0);
+  body.angularDamping = 0.5;
+  this.setPhysicsBody(body);
+  this.setGravity(0);
   this.countUp = 0;
 };
 
