@@ -12,10 +12,6 @@ var Bullet = function(position, angle) {
   this.angle = angle;
   var shape = new CANNON.Box(new CANNON.Vec3(1, 1, 1));
   var body = new CANNON.Body({mass: 1});
-  body.addShape(shape);
-  body.angularDamping = 0.5;
-  this.setPhysicsBody(body);
-  this.setGravity(0);
   this.countUp = 0;
 };
 
@@ -23,11 +19,10 @@ Bullet.prototype = Object.create( Damageable.prototype );
 
 Bullet.prototype.think = function() {
   // runs every tick, timesout the bullet
-  if (this.countUp > 99) {
+  if (this.countUp++ > 99) {
     this.remove();
   } else {
     this.setPos((new THREE.Vector3()).addVectors(this.getPos(),this.angle));
-    this.countUp++;
   }
 };
 
