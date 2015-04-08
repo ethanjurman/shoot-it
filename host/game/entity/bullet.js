@@ -19,7 +19,8 @@ Bullet.prototype = Object.create( Damageable.prototype );
 
 Bullet.prototype.think = function() {
   // runs every tick, timesout the bullet
-  if (this.countUp++ > 99) {
+  // 2.5 seconds * 60 frames per second
+  if (this.countUp++ > 2.5 * 60) {
     this.remove();
   } else {
     this.setPos((new THREE.Vector3()).addVectors(this.getPos(),this.angle));
