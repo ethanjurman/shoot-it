@@ -20,12 +20,14 @@ if (window.DeviceMotionEvent != undefined) {
   }
 }
 
+var vibrate = (window.navigator && window.navigator.vibrate.bind(window.navigator)) || function () {};
+
 deviceFire = function(){
   var socket = io();
   socket.emit("fire");
   var fireButton = document.getElementById("fire");
   fireButton.style.background = "darkblue";
-  window.navigator.vibrate(20); // vibrate for 50ms
+  vibrate(20); // vibrate for 20ms
   fireButton.style.background = "darkred";
 }
 updatePlane = function(motion){
