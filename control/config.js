@@ -15,7 +15,7 @@ if (window.DeviceMotionEvent != undefined) {
     // TODO seems like the inverts are inverted?
     motion.x = (!invert.x ? -1 : 1) * (e.accelerationIncludingGravity.x*2).toFixed() / 5;
     motion.y = (!invert.y ? -1 : 1) * (e.accelerationIncludingGravity.y*2).toFixed() / 5;
-    motion.z = (!invert.z ? -1 : 1) * (e.accelerationIncludingGravity.z*2).toFixed() / 5;
+    motion.z = -(((!invert.z ? -1 : 1) * (e.accelerationIncludingGravity.z*2).toFixed() / 10) + (!invert.z ? 1 : -1));
   }
 }
 

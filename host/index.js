@@ -14,7 +14,7 @@ window.onload = function(){
 	new QRCode(qrEleConfig, qrcodeConfig);
 	qrEleConfig.appendChild(document.createTextNode(qrcodeConfig));
 	bounds = document.getElementById('play').getBoundingClientRect();
-    var g = new Game();
+  var g = new Game();
 };
 
 window.onresize = function(){
