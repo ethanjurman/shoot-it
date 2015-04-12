@@ -101,7 +101,7 @@ Entity.prototype.setGeometry = function(geom, mats) {
     this.setRotation(this.rot || new THREE.Quaternion());
   }
   this.mesh = new THREE.Mesh(tGeom, facemat); //Assume worst case for phys meshes
-  scene.add(this.mesh);
+  Entity.scene.add(this.mesh);
   this.setPos(this.pos || new THREE.Vector3());
   this.setRotation(this.rot || new THREE.Quaternion());
   this.mesh.castShadow = true;
@@ -161,7 +161,7 @@ hook.add('think', function(deltatime) {
   for (var i=0; i<Entity._registry.length; i++) {
     var ent = Entity._registry[i];
     if (ent.think) {
-      ent.think(deltatimex );
+      ent.think(deltatime);
     }
   }
 });
