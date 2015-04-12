@@ -23713,7 +23713,7 @@ THREE.WebGLRenderer = function ( parameters ) {
 		} else {
 
 			// default for when object is not specified
-			// ( for example when prebuilding shader
+			// ( for example when preAsteroid shader
 			//   to be used with multiple objects )
 			//
 			//  - leave some extra space for other uniforms
@@ -24110,7 +24110,7 @@ THREE.WebGLProgram = ( function () {
 
 		}
 
-		// console.log( 'building new program ' );
+		// console.log( 'Asteroid new program ' );
 
 		//
 

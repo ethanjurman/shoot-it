@@ -2,12 +2,13 @@ var Damageable = require('./damageable');
 var THREE = require('../libs/three');
 var CANNON = require('../libs/cannon');
 
-var Building = function(xPos, yPos, zPos) {
+var Asteroid = function(xPos, yPos, zPos, size) {
+  size = size || 1;
   //Y position should be 0
   Damageable.call(this, 100);
   // base square ... not in use anymore?
   this.setGeometry(
-      new THREE.BoxGeometry( 1, 1, 1 ),
+      new THREE.SphereGeometry( size, 10),
       new THREE.MeshPhongMaterial({ color: 0x666666 })
   );
   var shape = new CANNON.Box(new CANNON.Vec3(10, 10, 10));
@@ -20,11 +21,11 @@ var Building = function(xPos, yPos, zPos) {
   this.setPos(new THREE.Vector3(xPos,yPos,zPos));
 };
 
-Building.prototype = Object.create( Damageable.prototype );
-Building.prototype.userId = -1;
+Asteroid.prototype = Object.create( Damageable.prototype );
+Asteroid.prototype.userId = -1;
 
-Building.prototype.think = function() {
+Asteroid.prototype.think = function() {
 
 };
 
-module.exports = Building;
+module.exports = Asteroid;

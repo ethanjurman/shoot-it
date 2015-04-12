@@ -3,7 +3,7 @@ var CANNON = require('./libs/cannon');
 var Entity = require('./entity/entity');
 var Level = require('./level');
 var hook = require('./hook');
-var Building = require('./entity/building');
+var Asteroid = require('./entity/asteroid');
 
 var Game = function() {
   this.initPhysics();
@@ -45,14 +45,14 @@ Game.prototype.makeGrid = function() {
   for(var i = 0; i < 20; i++) {
     a[i] = [];
     for(var j = 0; j < 20; j++) {
-      a[i][j] = new Building((i-10)*1.5,-8,(j-10)*1.5);
+      a[i][j] = new Asteroid((i-10)*1.5,-8,(j-10)*1.5);
     }
   }
 }
 
 Game.prototype.initLevel = function() {
-  //var building1 = new Building(0);
-  var building2 = new Building(-100);
+  //var Asteroid1 = new Asteroid(0);
+  var Asteroid2 = new Asteroid(-100);
 }
 
 Game.prototype.initScene = function() {
