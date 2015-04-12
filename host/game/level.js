@@ -3,7 +3,7 @@ var THREE = require('./libs/three');
 var Entity = require('./entity/entity');
 var hook = require('./hook');
 var global = require('./global');
-var Building = require('./entity/building');
+var Asteroid = require('./entity/asteroid');
 
 var LEVEL_SEGMENTS = 60;
 
@@ -33,7 +33,7 @@ var Level = function(gameObject, seed) {
   this.velocity = 0.001;
   this.timescale = 1/100;
   var self = this;
-  var box = new Building(0,0,0);
+  var box = new Asteroid(0,0,0);
   hook.add('think', function levelThink(delta) {
     self.distance += (delta * self.velocity);
     var t = self.distance*self.timescale;
@@ -56,7 +56,6 @@ var Level = function(gameObject, seed) {
     box.setRotation(quat);
     gameObject.camera.lookAt(boxPos);
 
-    console.log(gameObject.camera.position);
     hook.call('progress', t);
   });
 };
