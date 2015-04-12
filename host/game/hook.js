@@ -19,21 +19,20 @@ module.exports = {
     if (!hasSet) {
       delete events[evt][func.__hashkey];
     } else {
-      events[evt].remove(func);
+      events[evt].delete(func);
     }
   },
-  call: function() {
-    var evt = Array.prototype.pop.call(arguments);
+  call: function(evt, arg1, arg2, arg3) {
     if (!events[evt]) return;
     if (!hasSet) {
       for (var k in events[evt]) {
         if (events[evt][k].__hashkey) {
-          events[evt][k].apply(null, arguments)
+          events[evt][k](arg1, arg2, arg3)
         }
       }
     } else {
       events[evt].forEach(function(elem) {
-        elem.apply(null, arguments);
+        elem(arg1, arg2, arg3);
       });
     }
   }

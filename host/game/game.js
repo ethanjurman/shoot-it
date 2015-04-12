@@ -3,12 +3,15 @@ var CANNON = require('./libs/cannon');
 var Entity = require('./entity/entity');
 var Level = require('./level');
 var hook = require('./hook');
+var Building = require('./entity/building');
 
 var Game = function() {
   this.initPhysics();
   this.initScene();
+  //this.initLevel();
+  //this.makeGrid();
 
-  this.level = new Level();
+  this.level = new Level(this, Math.random());
 
   var self = this;
   var handleResize = function() {
@@ -23,7 +26,7 @@ Game.prototype.render = function() {
   this.world.step(delta/16.666);
 
   hook.call('think', delta); //Copy all physcoords to world coords, call any think hooks
-  
+
   this.renderer.render(this.scene, this.camera);
 
   this.time = Date.now();
@@ -36,6 +39,21 @@ Game.prototype.requestAnimationFrame = function() {
     self.render();
   });
 };
+
+Game.prototype.makeGrid = function() {
+  var a = [];
+  for(var i = 0; i < 20; i++) {
+    a[i] = [];
+    for(var j = 0; j < 20; j++) {
+      a[i][j] = new Building((i-10)*1.5,-8,(j-10)*1.5);
+    }
+  }
+}
+
+Game.prototype.initLevel = function() {
+  //var building1 = new Building(0);
+  var building2 = new Building(-100);
+}
 
 Game.prototype.initScene = function() {
   var self = this;
@@ -56,7 +74,7 @@ Game.prototype.initScene = function() {
     1000
   );
   this.camera.position.set( 0, 0, 50 );
-  this.camera.lookAt( new THREE.Vector3(0, 0, 0) );
+  //this.camera.lookAt( new THREE.Vector3(0, 0, 0) );
   this.scene.add( this.camera );
 
   this.scene.fog = new THREE.Fog( 0xffffff, 0, 750 );
