@@ -58,6 +58,12 @@ var Level = function(gameObject, seed) {
 
     hook.call('progress', t);
   });
+
+  window.addEventListener("keyup", function(event) {
+    if(event.keyCode == '32'){
+      self.velocity = self.velocity === 0 ? 0.001 : 0;
+    }
+  })
 };
 
 Level.prototype = {};
