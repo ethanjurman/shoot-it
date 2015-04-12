@@ -2,6 +2,7 @@ var Damageable = require('./damageable');
 var THREE = require('../libs/three');
 var CANNON = require('../libs/cannon');
 var Bullet = require('./bullet');
+var global = require('../global');
 
 var Player = function(color) {
   Damageable.call(this, 3);
@@ -24,6 +25,7 @@ var Player = function(color) {
   });
   this.motion = null;
   this.firing = false; // when set to true, do fire action, then set to false
+  // this.motion = new THREE.Vector3();
 };
 
 Player.prototype = Object.create( Damageable.prototype );
@@ -31,7 +33,16 @@ Player.prototype.userId = -1;
 
 Player.prototype.think = function() {
   if (this.motion) {
-    this.setPos(this.applyMotion(this.motion));
+
+    var t = (global.game.level.distance+2)*global.game.level.timescale;
+    var point = global.game.level.path.getPoint(t);
+
+    // set bounding movement
+    var planebound = {width: 100, height: 80};
+    var x = Math.min(planebound.width/2,Math.max(-planebound.width/2,(this.getPos().x - point.x + this.motion.y/10)));
+    var y = Math.min(planebound.height/2,Math.max(-planebound.height/2,(this.getPos().y - point.y - this.motion.z/10)));
+
+    this.setPos((new THREE.Vector3()).addVectors(point, new THREE.Vector3(x,y,0)));
   }
   if (this.firing) {
     this.fireProjectile();
@@ -50,10 +61,8 @@ Player.prototype.fireProjectile = function(){
 }
 
 Player.prototype.applyMotion = function(motion) {
-  var planebound = {width: 100, height: 80};
-  var x = Math.min(planebound.width/2,Math.max(-planebound.width/2,(this.getPos().x + motion.y/10)));
-  var y = Math.min(planebound.height/2,Math.max(-planebound.height/2,(this.getPos().y - motion.z/10)));
-  var pos = new THREE.Vector3(x, y, 0);
+  var x = motion.y;
+  var y = motion.z;
   var target = new THREE.Vector3(motion.z, 0, motion.y);
   if (this.mesh) {
       var quat = new THREE.Quaternion();
@@ -61,7 +70,6 @@ Player.prototype.applyMotion = function(motion) {
       this.setRotation(quat);
   }
   this.motion = motion;
-  return pos;
 };
 
 module.exports = Player;

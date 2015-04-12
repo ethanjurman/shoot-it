@@ -2,6 +2,7 @@ var Game = require('./game/game');
 var QRCode = require('./game/libs/qrcode.min');
 var socket = require('./socket');
 var controller = require('./controller');
+var global = require('./game/global');
 
 
 var bounds;
@@ -15,7 +16,7 @@ window.onload = function(){
 	new QRCode(qrEleConfig, qrcodeConfig);
 	qrEleConfig.appendChild(document.createTextNode(qrcodeConfig));
 	bounds = document.getElementById('play').getBoundingClientRect();
-  var g = new Game();
+  global.game = new Game();
 };
 
 window.onresize = function(){
