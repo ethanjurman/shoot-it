@@ -1,6 +1,8 @@
 var CANNON = require('../libs/cannon');
 var THREE = require('../libs/three');
 var OBJMTLLoader = require('../libs/loaders/OBJMTLLoader');
+var hook = require('../hook');
+var global = require('../global');
 /*
 Entity.js - A Wrapper around Cannon.js and Three.js that provides a
   game-esque 3d entity system
@@ -45,11 +47,11 @@ Entity.prototype.setModel = function(path, cb, cb2) {
         if (self.mesh) {
           object.position.copy(self.mesh.position);
           object.rotation.copy(self.mesh.rotation);
-          scene.remove(self.mesh);
+          Entity.scene.remove(self.mesh);
         }
         self.mesh = object; //Add w/o physics simulation
         self.mesh.castShadow = true;
-        scene.add(self.mesh);
+        Entity.scene.add(self.mesh);
         if (cb) cb(self);
       });
     } else {
@@ -87,7 +89,16 @@ Entity.prototype.setGeometry = function(geom, mats) {
   if (this.mesh) {
     var pos = this.getPos();
     var rot = this.getRotation();
-    scene.remove(this.mesh);
+    Entity.scene.remove(this.mesh);
+    this.mesh = new THREE.Mesh(tGeom, facemat);
+    Entity.scene.add(this.mesh);
+    this.setPos(pos);
+    this.setRotation(rot);
+  } else {
+    this.mesh = new THREE.Mesh(tGeom, facemat); //Assume worst case for phys meshes
+    Entity.scene.add(this.mesh);
+    this.setPos(this.pos || new THREE.Vector3());
+    this.setRotation(this.rot || new THREE.Quaternion());
   }
   this.mesh = new THREE.Mesh(tGeom, facemat); //Assume worst case for phys meshes
   scene.add(this.mesh);
@@ -105,7 +116,7 @@ Entity.prototype.setMaterial = function( mat ) {
 
 Entity.prototype.setPhysicsBody = function(body) {
   if (this.body) {
-      world.remove(this.body);
+      Entity.world.remove(this.body);
       body.gravity = this.body.gravity;
   }
   body.position.copy(this.mesh.position);
@@ -125,21 +136,19 @@ Entity.prototype.setMass = function(mass) {
 /**
 * Set the scene entities are added to on a global basis
 */
-var world = null;
 Entity.setWorld = function(o) {
-  world = o;
+  Entity.world = o;
 };
 
 /**
 * Set the scene entities are added to on a global basis
 */
-var scene = null;
 Entity.setScene = function(o) {
-  scene = o;
+  Entity.scene = o;
 };
 
 Entity._registry = [];
-Entity._think = function() {
+hook.add('think', function(deltatime) {
   for (var i=0; i<Entity._registry.length; i++) {
     var ent = Entity._registry[i];
     if (ent.mesh && ent.body) {
@@ -151,10 +160,10 @@ Entity._think = function() {
   for (var i=0; i<Entity._registry.length; i++) {
     var ent = Entity._registry[i];
     if (ent.think) {
-      ent.think();
+      ent.think(deltatimex );
     }
   }
-};
+});
 
 /**
 * Set the entity's position
@@ -206,8 +215,8 @@ Entity.prototype.remove = function() {
 
   Entity._registry.splice(Entity._registry.indexOf(this), 1);
 
-  world.remove(this.body);
-  scene.remove(this.mesh);
+  Entity.world.remove(this.body);
+  Entity.scene.remove(this.mesh);
 };
 
 /**
@@ -232,7 +241,7 @@ Entity.prototype.setGravity = function(g) {
 * Get the forward vector of the object in world coordinates
 */
 Entity.prototype.Forward = function() {
-  var local = new THREE.Vector3(0,0,-1);
+  var local = global.forward.clone();
   var world = local.applyMatrix4(this.mesh.matrixWorld);
   var dir = world.sub(this.mesh.position).normalize();
 
