@@ -1,10 +1,11 @@
 var Damageable = require('./damageable');
 var THREE = require('../libs/three');
 var CANNON = require('../libs/cannon');
-var global = require('../global');
+/*jshint -W079 */ var global = require('../global');
+var Bullet = require('./bullet');
 
 var Player = function(color) {
-  Damageable.call(this, 100);
+  Damageable.call(this, 3);
   // base square ... not in use anymore?
   this.setGeometry(
       new THREE.BoxGeometry( 10, 10, 10 ),
@@ -23,7 +24,8 @@ var Player = function(color) {
     self.mesh.scale.set(3,3,3);
     self.setMaterial(new THREE.MeshLambertMaterial({ color: self.color })); // change to correct color
   });
-  this.motion = new THREE.Vector3();
+  this.motion = null;
+  this.firing = false; // when set to true, do fire action, then set to false
 };
 
 Player.prototype = Object.create( Damageable.prototype );
@@ -42,11 +44,20 @@ Player.prototype.think = function() {
 
     this.setPos((new THREE.Vector3()).addVectors(point, new THREE.Vector3(x,y,0)));
   }
+  if (this.firing) {
+    this.fireProjectile();
+    this.firing = false;
+  }
 };
 
 Player.prototype.fire = function(){
-  // fires a laser bullet thingy
-  console.log("FIRING");
+  // sets the player to fire a projectile
+  this.firing = true;
+};
+
+Player.prototype.fireProjectile = function(){
+  // fires the projectile once
+  new Bullet(this.getPos(), new THREE.Vector3(this.motion.y,-this.motion.z,-5).normalize());
 };
 
 Player.prototype.applyMotion = function(motion) {

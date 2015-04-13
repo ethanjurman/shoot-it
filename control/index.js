@@ -3,14 +3,12 @@ var invert = {
   y:(localStorage.getItem('inv_y') === 'true') || false,
   z:(localStorage.getItem('inv_z') === 'true') || false};
 var motion = {x:0,y:0,z:0};
-var count = 0; // trigger an event if the count
 if (window.DeviceMotionEvent != undefined) {
   var socket = io();
   window.ondevicemotion = function(e) {
-    count++;
     motion.x = (invert.x ? -1 : 1) * (e.accelerationIncludingGravity.x*2).toFixed();
     motion.y = (invert.y ? -1 : 1) * (e.accelerationIncludingGravity.y*2).toFixed();
-    motion.z = (invert.z ? -1 : 1) * (e.accelerationIncludingGravity.z*2).toFixed();
+    motion.z = ((!invert.z ? -1 : 1) * (e.accelerationIncludingGravity.z*2).toFixed()) + (!invert.z ? 1 : -1);
     var alpha = (e.rotationRate.alpha*10);
     var beta = (e.rotationRate.beta*10);
     var gamma = (e.rotationRate.gamma*10);
@@ -22,16 +20,15 @@ if (window.DeviceMotionEvent != undefined) {
   }
 }
 
+var vibrate = (window.navigator && window.navigator.vibrate.bind(window.navigator)) || function () {};
+
 deviceFire = function(){
   var socket = io();
   socket.emit("fire");
   var fireButton = document.getElementById("fire");
   fireButton.style.background = "darkblue";
-  window.navigator.vibrate(50); // vibrate for 50ms
-
-  window.setTimeout(function(){
-    fireButton.style.background = "darkred";
-  },250);
+  vibrate(20); // vibrate for 20ms
+  fireButton.style.background = "darkred";
 }
 updatePlane = function(motion){
   socket.emit("update plane",motion); // this goes to index.js
