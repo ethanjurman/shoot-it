@@ -1,6 +1,7 @@
 var Game = require('./game/game');
 var QRCode = require('./game/libs/qrcode.min');
 var socket = require('./socket');
+var controller = require('./controller');
 
 
 var bounds;
