@@ -20,12 +20,13 @@ var Player = function(color) {
   var self = this;
   this.color = color;
   this.setModel('resources/ship1.obj','resources/ship1.mtl',function(){
-    self.mesh.scale.set(3,3,3);
     self.setMaterial(new THREE.MeshLambertMaterial({ color: self.color })); // change to correct color
   });
-  this.motion = null;
+  this.motion = {y:0,z:0};
   this.firing = false; // when set to true, do fire action, then set to false
-  // this.motion = new THREE.Vector3();
+
+  // starting relative position in xy space. 0,0 is the left bottom; 1,1 is right top.
+  this.relativePos = {y:0,z:0};
 };
 
 Player.prototype = Object.create( Damageable.prototype );
@@ -33,16 +34,16 @@ Player.prototype.userId = -1;
 
 Player.prototype.think = function() {
   if (this.motion) {
+    // getting the camera
+    var cameraPos = global.game.camera.position;
+    var cameraRot = global.game.camera.rotation;
 
-    var t = (global.game.level.distance+2)*global.game.level.timescale;
-    var point = global.game.level.path.getPoint(t);
-
-    // set bounding movement
-    var planebound = {width: 100, height: 80};
-    var x = Math.min(planebound.width/2,Math.max(-planebound.width/2,(this.getPos().x - point.x + this.motion.y/10)));
-    var y = Math.min(planebound.height/2,Math.max(-planebound.height/2,(this.getPos().y - point.y - this.motion.z/10)));
-
-    this.setPos((new THREE.Vector3()).addVectors(point, new THREE.Vector3(x,y,0)));
+    // set the relative position based on the motion and previous relative position
+    this.relativePos.y = Math.max(-1,Math.min(1,this.relativePos.y + this.motion.y / 100));
+    this.relativePos.z = Math.max(-1,Math.min(1,this.relativePos.z + this.motion.z / 100));
+    // y backwards?
+    var forwardVector = new THREE.Vector3(this.relativePos.y*10,-this.relativePos.z*5, -10).applyEuler(cameraRot);
+    this.setPos((new THREE.Vector3()).addVectors(cameraPos, forwardVector));
   }
   if (this.firing) {
     this.fireProjectile();
