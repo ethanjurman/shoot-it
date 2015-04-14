@@ -49,26 +49,18 @@ function getGameInput(){
 			var ply = players.find(id);
   		if (!ply) throw new Error('Got update for nonexistant player id:'+ id +'');
   		ply.applyMotion(motion);
+
+  		// this will be for the ship shooting
+  		if(buttonsPushed(controller) > 0){
+  			ply.fire();
+  		}
 		}
 
 	}
 
 }
 
-// socket.on('update plane', function(data){
-//   var id = data[0],
-//       motion = data[1],
-//       ply = players.find(id);
-//   if (!ply) throw new Error('Got update for nonexistant player id:'+ id +'');
-//   ply.applyMotion(motion);
-// });
-
 // socket.on('remove plane', function(id){
 //   players.remove(players.find(id));
-// });
-
-// socket.on('fire', function(id){
-//   // A player (playerId) hit FIRE!!
-//   players.find(id).fire();
 // });
 module.exports = Controller;
