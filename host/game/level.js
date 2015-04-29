@@ -54,7 +54,7 @@ var Level = function(gameObject, seed) {
     var quat = new THREE.Quaternion();
     quat.setFromUnitVectors(global.forward, self.path.getTangent(t2));
     box.setRotation(quat);
-    gameObject.camera.lookAt(boxPos);
+    // gameObject.camera.lookAt(boxPos);
 
     hook.call('progress', t);
   });
