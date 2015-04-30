@@ -11,10 +11,9 @@ var Player = function(color) {
       new THREE.MeshPhongMaterial({ color: 0x666666 })
   );
   var shape = new CANNON.Box(new CANNON.Vec3(10, 10, 10));
-  var body = new CANNON.Body({mass: 100});
+  var body = new CANNON.Body({mass: 0});
   body.addShape(shape);
   body.angularVelocity.set(0,0,0);
-  body.angularDamping = 0.5;
   this.setPhysicsBody(body);
   this.setGravity(0);
   var self = this;
@@ -47,7 +46,7 @@ Player.prototype.fire = function(){
 
 Player.prototype.fireProjectile = function(){
   // fires the projectile once
-  new Bullet(this.getPos(), new THREE.Vector3(this.motion.y,-this.motion.z,-5).normalize());
+  new Bullet(this.getPos(), this.Forward);
 }
 
 Player.prototype.applyMotion = function(motion) {

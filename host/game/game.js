@@ -80,7 +80,7 @@ Game.prototype.initScene = function() {
 Game.prototype.initPhysics = function() {
   this.time = Date.now();
   this.world = new CANNON.World();
-  this.world.gravity.set(0,10,0);
+  this.world.gravity.set(0,0,0);
   this.world.broadphase = new CANNON.NaiveBroadphase();
   this.world.solver.iterations = 10;
 
