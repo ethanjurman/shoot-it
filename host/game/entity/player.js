@@ -17,6 +17,7 @@ var Player = function(color) {
   body.addShape(shape);
   body.angularVelocity.set(0,0,0);
   this.setPhysicsBody(body);
+  this.setCollisionGroup(global.cgroup.PLAYER);
   this.setGravity(0);
   var self = this;
   this.color = color;

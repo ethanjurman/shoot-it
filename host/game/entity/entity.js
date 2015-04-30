@@ -133,8 +133,9 @@ Entity.prototype.setMaterial = function( mat ) {
 
 Entity.prototype.setPhysicsBody = function(body) {
   if (this.body) {
-      Entity.world.removeBody(this.body);
-      body.gravity = this.body.gravity;
+    this.body.entity = null;
+    Entity.world.removeBody(this.body);
+    body.gravity = this.body.gravity;
   }
   body.position.copy(this.mesh.position);
   body.quaternion.copy(this.mesh.quaternion);
@@ -142,12 +143,11 @@ Entity.prototype.setPhysicsBody = function(body) {
   this.body.collisionFilterGroup = this._collisionGroup;
   this.body.collisionFilterMask = this._collisionMask;
   body.entity = this;
-
+  
   body.addEventListener("collide",function(e){
-      //console.log("Collided with body:",e.body);
-      //console.log("Contact between bodies:",e.contact);
-      //console.log(e.body.entity);
-      //e.body.entity.remove();
+    if (body.entity && body.entity.onCollide) {
+      body.entity.onCollide(e);
+    }
   });
 
   Entity.world.addBody(this.body);
@@ -244,7 +244,9 @@ Entity.prototype.remove = function() {
 
   Entity._registry.splice(Entity._registry.indexOf(this), 1);
 
-  Entity.world.remove(this.body);
+  //Queue body for deletion, in case called in a physics callback
+  var body = this.body;
+  setTimeout(function() { Entity.world.remove(body); }, 0);
   Entity.scene.remove(this.mesh);
 };
 

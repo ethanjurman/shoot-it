@@ -1,6 +1,7 @@
 var Damageable = require('./damageable');
 var THREE = require('../libs/three');
 var CANNON = require('../libs/cannon');
+var global = require('../global');
 
 var Asteroid = function(xPos, yPos, zPos, size) {
   size = size || 1;
@@ -17,6 +18,7 @@ var Asteroid = function(xPos, yPos, zPos, size) {
   body.angularVelocity.set(0,0,0);
   body.angularDamping = 0.5;
   this.setPhysicsBody(body);
+  this.setCollisionGroup(global.cgroup.WORLD);
   this.setGravity(0);
   this.setPos(new THREE.Vector3(xPos,yPos,zPos));
 };

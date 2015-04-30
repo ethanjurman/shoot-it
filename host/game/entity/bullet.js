@@ -1,9 +1,10 @@
-var Damageable = require('./damageable');
+var Entity = require('./entity');
 var THREE = require('../libs/three');
 var CANNON = require('../libs/cannon');
+var global = require('../global');
 
 var Bullet = function(position, angle) {
-  Damageable.call(this, 1);
+  Entity.call(this);
   this.setGeometry(
       new THREE.BoxGeometry( 1, 1, 1 ),
       new THREE.MeshPhongMaterial({ color: 0x666666 })
@@ -15,14 +16,27 @@ var Bullet = function(position, angle) {
   body.initVelocity.set(angle.x + 0, angle.y + 0, angle.z + 100);
   body.angularDamping = 0.5;
   this.setPhysicsBody(body);
+  this.setCollisionGroup(global.cgroup.BULLET);
+  this.setCollisionMask(global.cgroup.WORLD | global.cgroup.ENEMY);
   this.setGravity(0);
-  this.countUp = 0;
+  setTimeout((function(){
+    if (this) {
+      this.remove();
+    }
+  }).bind(this), Bullet.LIVE_TIME_MS);
 };
 
-Bullet.prototype = Object.create( Damageable.prototype );
+Bullet.prototype = Object.create( Entity.prototype );
 
-Bullet.prototype.think = function() {
+Bullet.LIVE_TIME_MS = 1500;
+Bullet.IMPACT_DAMAGE = 20;
 
+Bullet.prototype.onCollide = function(e) {
+  if (e.body && e.body.entity && e.body.entity.applyDamage) {
+    console.log(e);
+    e.body.entity.applyDamage(Bullet.IMPACT_DAMAGE);
+    this.remove();
+  }
 };
 
 module.exports = Bullet;

@@ -22,6 +22,7 @@ var Enemy = function(type, path_point) {
   body.angularVelocity.set(0,0,0);
   body.angularDamping = 0.5;
   this.setPhysicsBody(body);
+  this.setCollisionGroup(global.cgroup.ENEMY);
   this.setGravity(0);
   this.path_point = path_point;
   var self = this;
