@@ -140,7 +140,7 @@ Entity.prototype.setPhysicsBody = function(body) {
 Entity.prototype.setMass = function(mass) {
   this.mass = mass;
   if (this.body)
-    this.bosy.mass = mass;
+    this.body.mass = mass;
 };
 
 /**
@@ -168,9 +168,9 @@ hook.add('think', function(deltatime) {
   }
 
   for (var i=0; i<Entity._registry.length; i++) {
-    var ent = Entity._registry[i];
-    if (ent.think) {
-      ent.think(deltatime);
+    var ent2 = Entity._registry[i];
+    if (ent2.think) {
+      ent2.think(deltatime);
     }
   }
 });
