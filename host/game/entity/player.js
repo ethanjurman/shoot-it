@@ -12,7 +12,7 @@ var Player = function(color) {
       new THREE.BoxGeometry( 10, 10, 10 ),
       new THREE.MeshPhongMaterial({ color: 0x666666 })
   );
-  var shape = new CANNON.Box(new CANNON.Vec3(10, 10, 10));
+  var shape = new CANNON.Box(new CANNON.Vec3(1, 1, 1));
   var body = new CANNON.Body({mass: 0});
   body.addShape(shape);
   body.angularVelocity.set(0,0,0);

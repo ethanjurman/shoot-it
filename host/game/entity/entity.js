@@ -116,13 +116,22 @@ Entity.prototype.setMaterial = function( mat ) {
 
 Entity.prototype.setPhysicsBody = function(body) {
   if (this.body) {
-      Entity.world.remove(this.body);
+      Entity.world.removeBody(this.body);
       body.gravity = this.body.gravity;
   }
   body.position.copy(this.mesh.position);
   body.quaternion.copy(this.mesh.quaternion);
   this.body = body;
-  Entity.world.add(this.body);
+  body.entity = this;
+
+  body.addEventListener("collide",function(e){
+      //console.log("Collided with body:",e.body);
+      //console.log("Contact between bodies:",e.contact);
+      //console.log(e.body.entity);
+      //e.body.entity.remove();
+  });
+
+  Entity.world.addBody(this.body);
 };
 
 /**

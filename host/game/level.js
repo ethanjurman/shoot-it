@@ -5,12 +5,12 @@ var hook = require('./hook');
 var global = require('./global');
 var Asteroid = require('./entity/asteroid');
 
-var LEVEL_SEGMENTS = 60;
+var LEVEL_SEGMENTS = 30;
 
 //TODO: Generators that aren't full random, but have theme and cohesion, ala minecraft biomes
 var Level = function(gameObject, seed) {
   this.points = [new THREE.Vector3(0,0,0)];
-  generators.Random(this, LEVEL_SEGMENTS - 2);
+  generators.AsteroidField(this, LEVEL_SEGMENTS - 2);
 
   this.path = new THREE.SplineCurve3(this.points);
 
