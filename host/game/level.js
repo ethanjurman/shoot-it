@@ -5,12 +5,12 @@ var hook = require('./hook');
 var global = require('./global');
 var Asteroid = require('./entity/asteroid');
 
-var LEVEL_SEGMENTS = 30;
+var LEVEL_SEGMENTS = global.LEVEL_SEGMENTS;
 
 //TODO: Generators that aren't full random, but have theme and cohesion, ala minecraft biomes
 var Level = function(gameObject, seed) {
   this.points = [new THREE.Vector3(0,0,0)];
-  generators.AsteroidField(this, LEVEL_SEGMENTS - 2);
+  generators.AsteroidField(this, LEVEL_SEGMENTS - 1);
 
   this.path = new THREE.SplineCurve3(this.points);
 
@@ -34,6 +34,7 @@ var Level = function(gameObject, seed) {
   this.timescale = 1/100;
   var self = this;
   var box = new Asteroid(0,0,0);
+  var called = {};
   hook.add('think', function levelThink(delta) {
     self.distance += (delta * self.velocity);
     var t = self.distance*self.timescale;
@@ -56,7 +57,11 @@ var Level = function(gameObject, seed) {
     box.setRotation(quat);
     // gameObject.camera.lookAt(boxPos);
 
-    hook.call('progress', t);
+    var nodeNum = Math.floor(t*LEVEL_SEGMENTS);
+    if (!called[nodeNum]) {
+      hook.call('node '+nodeNum, self);
+      called[nodeNum] = true;
+    }
   });
 
   window.addEventListener("keyup", function(event) {
@@ -72,5 +77,13 @@ Level.prototype.remove = function() {
 
   Entity.scene.remove(this.line);
 };
+
+Level.prototype.getPos = function() {
+  return this.plane.position;
+};
+
+Level.prototype.getRotation = function() {
+  return this.plane.rotation;
+}
 
 module.exports = Level;

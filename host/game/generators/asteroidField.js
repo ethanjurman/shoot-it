@@ -1,6 +1,7 @@
 var THREE = require('../libs/three');
 var Asteroid = require('../entity/asteroid');
 var hook = require('../hook');
+var global = require('../global');
 
 var VARIANCE = 20;
 var NUMASTEROIDS = 10;
@@ -53,26 +54,18 @@ var AsteroidField = function(level, remaining) {
       tempPos[2],
       tempSize);
 
-    /*
-    var asteroid = new Asteroid(
-      point.x+(Math.random()*(VARIANCE)-VARIANCE/2),
-      point.y+(Math.random()*(VARIANCE)-VARIANCE/2),
-      point.z+(Math.random()*(VARIANCE)-VARIANCE/2),
-      (Math.random()*2)+1);
-    */
     sizes.push(tempSize);
     positions.push(tempPos);
   }
   if (remaining > 0)
     AsteroidField(level, remaining - 1);
-/*
-  hook.add('progress', function progressHook(t) {
-    if (t - ((60 - remaining)/60) <= 0.001) {
-      console.log(remaining, ((60 - remaining)/60), t);
-      hook.remove('progress', progressHook);
-    }
+
+  var nodeId = global.LEVEL_SEGMENTS - (remaining+1);
+  hook.add('node '+nodeId, function progressHook(level) {
+    var curPos = level.getPos();
+    console.log('Reached node '+nodeId);
+    console.log(curPos);
   });
-  */
 };
 
 module.exports = AsteroidField;

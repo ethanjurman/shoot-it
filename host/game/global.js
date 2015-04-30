@@ -14,5 +14,7 @@ module.exports = {
     NONBULLET: 1 | 2 | 8,
     NONPLAYER: 2 | 4 | 8,
     ALL: 1 | 2 | 4 | 8
-  }
+  },
+  
+  LEVEL_SEGMENTS: 30
 };
