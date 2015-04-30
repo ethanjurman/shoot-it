@@ -1,10 +1,13 @@
 var THREE = require('./libs/three');
 var CANNON = require('./libs/cannon');
 var Entity = require('./entity/entity');
+var Level = require('./level');
 
 var Game = function() {
   this.initPhysics();
   this.initScene();
+  
+  this.level = new Level();
 
   var self = this;
   var handleResize = function() {
