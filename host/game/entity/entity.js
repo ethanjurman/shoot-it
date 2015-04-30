@@ -122,7 +122,7 @@ Entity.prototype.setPhysicsBody = function(body) {
   body.position.copy(this.mesh.position);
   body.quaternion.copy(this.mesh.quaternion);
   this.body = body;
-  world.add(this.body);
+  Entity.world.add(this.body);
 };
 
 /**
