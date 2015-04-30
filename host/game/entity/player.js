@@ -1,6 +1,7 @@
 var Damageable = require('./damageable');
 var THREE = require('../libs/three');
 var CANNON = require('../libs/cannon');
+/*jshint -W079 */ var global = require('../global');
 var Bullet = require('./bullet');
 var global = require('../global');
 
@@ -59,7 +60,7 @@ Player.prototype.fire = function(){
 Player.prototype.fireProjectile = function(){
   // fires the projectile once
   new Bullet(this.getPos(), this.Forward);
-}
+};
 
 Player.prototype.applyMotion = function(motion) {
   var x = motion.y;
