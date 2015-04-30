@@ -22,6 +22,23 @@ if (!String.prototype.endsWith) { //Polyfill
 */
 var Entity = function() {
   Entity._registry.push(this);
+  
+  this._collisionGroup = global.cgroup.ALL;
+  this._collisionMask = global.cgroup.ALL;
+};
+
+Entity.prototype.setCollisionGroup = function(cgroup) {
+  this._collisionGroup = cgroup;
+  if (this.body) {
+    this.body.collisionFilterGroup = cgroup;
+  }
+};
+
+Entity.prototype.setCollisionMask = function(cgroup) {
+  this._collisionMask = cgroup;
+  if (this.body) {
+    this.body.collisionFilterMask = cgroup;
+  }
 };
 
 /**
@@ -122,6 +139,8 @@ Entity.prototype.setPhysicsBody = function(body) {
   body.position.copy(this.mesh.position);
   body.quaternion.copy(this.mesh.quaternion);
   this.body = body;
+  this.body.collisionFilterGroup = this._collisionGroup;
+  this.body.collisionFilterMask = this._collisionMask;
   body.entity = this;
 
   body.addEventListener("collide",function(e){
