@@ -9,6 +9,7 @@ var Asteroid = require('./entity/asteroid');
 var Game = function() {
   this.initPhysics();
   this.initScene();
+  this.initStarfield();
   //this.initLevel();
   //this.makeGrid();
 
@@ -20,6 +21,21 @@ var Game = function() {
     self.camera.updateProjectionMatrix();
   };
   window.addEventListener( 'resize', handleResize, false );
+};
+
+Game.prototype.initStarfield = function() {
+    // Starfield    
+    var stars = new THREE.Geometry();
+    for (var i=0; i<1000; i++) {
+      stars.vertices.push(new THREE.Vector3(
+        1e3 * Math.random() - 5e2,
+        1e3 * Math.random() - 5e2,
+        -1e2
+      ));
+    }
+    var star_stuff = new THREE.PointCloudMaterial();
+    var star_system = new THREE.PointCloud(stars, star_stuff);
+    this.scene.add(star_system);
 };
 
 Game.prototype.render = function() {

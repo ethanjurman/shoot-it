@@ -131,6 +131,10 @@ Entity.prototype.setMaterial = function( mat ) {
   });
 };
 
+Entity.prototype.setSolidColor = function(color) {
+  this.setMaterial(new THREE.MeshLambertMaterial({ color: self.color })); // change to correct color
+};
+
 Entity.prototype.setPhysicsBody = function(body) {
   if (this.body) {
     this.body.entity = null;
