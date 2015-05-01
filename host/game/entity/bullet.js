@@ -9,16 +9,16 @@ var Bullet = function(position, angle) {
       new THREE.BoxGeometry( 1, 1, 1 ),
       new THREE.MeshPhongMaterial({ color: 0x666666 })
   );
-  this.setPos(new THREE.Vector3(position.x,position.y,position.z - 2));
+  this.setPos(new THREE.Vector3(position.x,position.y,position.z - 5));
   var shape = new CANNON.Box(new CANNON.Vec3(1, 1, 1));
-  var body = new CANNON.Body({mass: 1});
+  var body = new CANNON.Body({mass: 10});
   body.addShape(shape);
   body.initVelocity.set(angle.x + 0, angle.y + 0, angle.z + 100);
-  body.velocity.set(0, 0, -1);
+  body.velocity.set(0, 0, -3);
   body.angularDamping = 0.0;
   this.setPhysicsBody(body);
   this.setCollisionGroup(global.cgroup.BULLET);
-  this.setCollisionMask(global.cgroup.WORLD);
+  // this.setCollisionMask(global.cgroup.WORLD);
   this.setGravity(0);
   setTimeout((function(){
     if (this) {

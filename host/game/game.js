@@ -24,7 +24,7 @@ var Game = function() {
 };
 
 Game.prototype.initStarfield = function() {
-    // Starfield    
+    // Starfield
     var stars = new THREE.Geometry();
     for (var i=0; i<1000; i++) {
       stars.vertices.push(new THREE.Vector3(
@@ -39,7 +39,7 @@ Game.prototype.initStarfield = function() {
 };
 
 Game.prototype.render = function() {
-  this.level.velocity = players.players.length === 0 ? 0 : 0.005;
+  this.level.velocity = players.players.length === 0 ? 0 : 0.003;
   var delta = Date.now() - this.time;
   this.world.step(delta/16.666);
 

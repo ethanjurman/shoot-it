@@ -13,7 +13,7 @@ var Asteroid = function(xPos, yPos, zPos, size) {
       new THREE.MeshPhongMaterial({ color: 0x666666 })
   );
   var shape = new CANNON.Sphere(size);
-  var body = new CANNON.Body({mass: 1000});
+  var body = new CANNON.Body({mass: 10000});
   body.addShape(shape);
   // body.angularVelocity.set(Math.random(),0,Math.random());
   body.angularDamping = 0.5;

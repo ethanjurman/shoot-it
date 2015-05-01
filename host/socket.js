@@ -20,7 +20,7 @@ socket.on('update plane', function(data){
   // if (!ply) throw new Error('Got update for nonexistant player id:'+ id +'');
   if (!ply) {
 		// if the player doesn't exit, add them (and use the color we stored earlier)
-	  var color = localStorage[id] || 0xffffff*Math.random();
+	  var color = Number(localStorage[id]) || 0xffffff*Math.random();
 		console.log(color);
 		var ply = players.create(color);
 	  ply.userId = id;
