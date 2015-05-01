@@ -22,9 +22,11 @@ var Asteroid = function(xPos, yPos, zPos, size) {
   this.setGravity(0);
   this.setPos(new THREE.Vector3(xPos,yPos,zPos));
   var type = Math.ceil(Math.random()*2)+1; // random type
-  // this.setModel('resources/asteroid'+type+'0.obj','resources/asteroid'+type+'0.mtl',function(){});
-  // this.mesh.scale.set(size,size,size);
-  // this.rotation = new THREE.Vector3(Math.random()*10,Math.random()*10,Math.random()*10);
+  var self = this;
+  this.setModel('resources/asteroid'+type+'0.obj','resources/asteroid'+type+'0.mtl', function() {
+    self.mesh.scale.set(size,size,size);
+    self.rotation = new THREE.Vector3(Math.random()*10,Math.random()*10,Math.random()*10);
+  });
 };
 
 Asteroid.prototype = Object.create( Damageable.prototype );
