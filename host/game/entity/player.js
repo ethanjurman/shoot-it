@@ -42,8 +42,8 @@ Player.prototype.think = function() {
     var cameraRot = global.game.camera.rotation;
 
     // set the relative position based on the motion and previous relative position
-    this.relativePos.y = Math.max(-1,Math.min(1,this.relativePos.y + this.motion.y / 100));
-    this.relativePos.z = Math.max(-1,Math.min(1,this.relativePos.z + this.motion.z / 100));
+    this.relativePos.y = Math.max(-1,Math.min(1,this.relativePos.y + this.motion.y / 500));
+    this.relativePos.z = Math.max(-1,Math.min(1,this.relativePos.z + this.motion.z / 500));
     // y backwards?
     var forwardVector = new THREE.Vector3(this.relativePos.y*10,-this.relativePos.z*5, -10).applyEuler(cameraRot);
     this.setPos((new THREE.Vector3()).addVectors(cameraPos, forwardVector));

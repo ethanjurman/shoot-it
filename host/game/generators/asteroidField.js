@@ -4,13 +4,13 @@ var hook = require('../hook');
 var global = require('../global');
 
 var VARIANCE = 20;
-var NUMASTEROIDS = 10;
+var NUMASTEROIDS = 5;
 
 var AsteroidField = function(level, remaining) {
   var point = level.points[level.points.length-1].clone().add(new THREE.Vector3(
         Math.random()-0.5/2,
         Math.random()-0.5/2,
-        Math.random()-1.5).normalize().multiplyScalar(VARIANCE));
+        Math.random()-1.5).normalize().multiplyScalar(VARIANCE*2));
 
   level.points.push(point);
 
@@ -23,11 +23,11 @@ var AsteroidField = function(level, remaining) {
   var iterations = 0;
   //Making asteroids
   for(var i = 0; i < NUMASTEROIDS; i++) {
-    tempSize = (Math.random()*2)+1;
+    tempSize = (Math.random()*4)+8;
     tempPos = [
       point.x+(Math.random()*(VARIANCE)-VARIANCE/2),
       point.y+(Math.random()*(VARIANCE)-VARIANCE/2),
-      point.z+(Math.random()*(VARIANCE)-VARIANCE/2)];
+      point.z+(Math.random()*(VARIANCE*2)-VARIANCE)];
 
     iterations = 0;
     for(var n = 0; n < sizes.length; n++) {
@@ -40,7 +40,7 @@ var AsteroidField = function(level, remaining) {
           tempPos = [
             point.x+(Math.random()*(VARIANCE)-VARIANCE/2),
             point.y+(Math.random()*(VARIANCE)-VARIANCE/2),
-            point.z+(Math.random()*(VARIANCE)-VARIANCE/2)];
+            point.z+(Math.random()*(VARIANCE*2)-VARIANCE)];
           distance = Math.sqrt(Math.pow((tempPos[0] - positions[n][0]),2) + Math.pow((tempPos[1] - positions[n][1]),2) + Math.pow((tempPos[2] - positions[n][2]),2));
           minDistance = tempSize + sizes[n];
           n = 0;
@@ -48,14 +48,16 @@ var AsteroidField = function(level, remaining) {
       }
     }
 
-    var asteroid = new Asteroid(
-      tempPos[0],
-      tempPos[1],
-      tempPos[2],
-      tempSize);
+    if(iterations < 5) {
+      var asteroid = new Asteroid(
+        tempPos[0],
+        tempPos[1],
+        tempPos[2],
+        tempSize);
 
-    sizes.push(tempSize);
-    positions.push(tempPos);
+      sizes.push(tempSize);
+      positions.push(tempPos);
+    }
   }
   if (remaining > 0)
     AsteroidField(level, remaining - 1);
