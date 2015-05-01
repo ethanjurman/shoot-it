@@ -63,8 +63,8 @@ var AsteroidField = function(level, remaining) {
   var nodeId = global.LEVEL_SEGMENTS - (remaining+1);
   hook.add('node '+nodeId, function progressHook(level) {
     var curPos = level.getPos();
-    console.log('Reached node '+nodeId);
-    console.log(curPos);
+    // console.log('Reached node '+nodeId);
+    // console.log(curPos);
   });
 };
 

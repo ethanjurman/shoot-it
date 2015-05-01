@@ -9,7 +9,7 @@ var Player = function(color) {
   Damageable.call(this, 3);
   // base square ... not in use anymore?
   this.setGeometry(
-      new THREE.BoxGeometry( 10, 10, 10 ),
+      new THREE.BoxGeometry( 5, 5, 5 ),
       new THREE.MeshPhongMaterial({ color: 0x666666 })
   );
   var shape = new CANNON.Box(new CANNON.Vec3(1, 1, 1));
@@ -19,6 +19,7 @@ var Player = function(color) {
   this.setPhysicsBody(body);
   this.setCollisionGroup(global.cgroup.PLAYER);
   this.setGravity(0);
+  this.score = 0;
   var self = this;
   this.color = color;
   this.setModel('resources/ship1.obj','resources/ship1.mtl',function(){

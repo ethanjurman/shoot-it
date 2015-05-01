@@ -48,13 +48,13 @@ var Level = function(gameObject, seed) {
     gameObject.camera.position.set(self.plane.position.x, self.plane.position.y, self.plane.position.z);
 
     //debug box
-    var t2 = (self.distance+1)*self.timescale;
-
-    var boxPos = self.path.getPoint(t2);
-    box.setPos(boxPos);
-    var quat = new THREE.Quaternion();
-    quat.setFromUnitVectors(global.forward, self.path.getTangent(t2));
-    box.setRotation(quat);
+    // var t2 = (self.distance+1)*self.timescale;
+    //
+    // var boxPos = self.path.getPoint(t2);
+    // box.setPos(boxPos);
+    // var quat = new THREE.Quaternion();
+    // quat.setFromUnitVectors(global.forward, self.path.getTangent(t2));
+    // box.setRotation(quat);
     // gameObject.camera.lookAt(boxPos);
 
     var nodeNum = Math.floor(t*LEVEL_SEGMENTS);

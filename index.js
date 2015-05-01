@@ -9,6 +9,9 @@ var to5ify = require("6to5ify");
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/host/index.html');
 });
+app.get('/asteroidDrive.gif', function(req, res){
+  res.sendFile(__dirname + '/host/asteroidDrive.gif');
+});
 
 app.get('/control', function(req, res){
   res.sendFile(__dirname + '/control/index.html');

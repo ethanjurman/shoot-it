@@ -3,6 +3,7 @@ var CANNON = require('./libs/cannon');
 var Entity = require('./entity/entity');
 var Level = require('./level');
 var hook = require('./hook');
+var players = require('./player-store');
 var Asteroid = require('./entity/asteroid');
 
 var Game = function() {
@@ -22,6 +23,7 @@ var Game = function() {
 };
 
 Game.prototype.render = function() {
+  this.level.velocity = players.players.length === 0 ? 0 : 0.005;
   var delta = Date.now() - this.time;
   this.world.step(delta/16.666);
 
@@ -62,7 +64,7 @@ Game.prototype.initScene = function() {
     antialias: true,
     logarithmicDepthBuffer: true
   });
-  this.renderer.setClearColor(0xffffffff);
+  this.renderer.setClearColor(0x0000000);
   this.renderer.setSize( window.innerWidth, window.innerHeight );
 
   this.scene = new THREE.Scene();

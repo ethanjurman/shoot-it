@@ -11,6 +11,14 @@ canvas {
   z-index: -100;
 }
 
+#title-gif {
+  width:50%;
+  position:fixed;
+  top:0px;
+  max-height:100%;
+  margin: auto 0px;
+}
+
 #qr_code_play {
   left: 0px;
 }

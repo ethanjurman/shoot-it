@@ -17,6 +17,10 @@ window.onload = function(){
 	qrEleConfig.appendChild(document.createTextNode(qrcodeConfig));
 	bounds = document.getElementById('play').getBoundingClientRect();
   global.game = new Game();
+	setTimeout(function(){
+		document.getElementById("title-gif").style.display = "";
+	}, 2000);
+
 };
 
 window.onresize = function(){

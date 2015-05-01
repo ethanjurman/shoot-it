@@ -15,12 +15,16 @@ var Asteroid = function(xPos, yPos, zPos, size) {
   var shape = new CANNON.Sphere(size);
   var body = new CANNON.Body({mass: 100});
   body.addShape(shape);
-  body.angularVelocity.set(0,0,0);
+  // body.angularVelocity.set(Math.random(),0,Math.random());
   body.angularDamping = 0.5;
   this.setPhysicsBody(body);
   this.setCollisionGroup(global.cgroup.WORLD);
   this.setGravity(0);
   this.setPos(new THREE.Vector3(xPos,yPos,zPos));
+  var type = Math.ceil(Math.random()*2)+1; // random type
+  // this.setModel('resources/asteroid'+type+'0.obj','resources/asteroid'+type+'0.mtl',function(){});
+  // this.mesh.scale.set(size,size,size);
+  // this.rotation = new THREE.Vector3(Math.random()*10,Math.random()*10,Math.random()*10);
 };
 
 Asteroid.prototype = Object.create( Damageable.prototype );

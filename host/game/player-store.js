@@ -4,6 +4,7 @@ var store = { players: [] };
 store.create = function(color) {
   var p = new Player(color);
   store.players.push(p);
+  document.getElementById("title-gif").style.display = "none";
   return p;
 };
 
@@ -13,6 +14,13 @@ store.remove = function(player) {
     store.players.splice(index, 1);
   }
   player.remove();
+  if (store.players.length == 0){
+    document.getElementById("title-gif").src = "";
+    setTimeout(function(){
+      document.getElementById("title-gif").src = "/asteroidDrive.gif";
+      document.getElementById("title-gif").style.display = "";
+    },2000);
+  }
 };
 
 store.find = function(id) {
