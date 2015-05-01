@@ -5,7 +5,7 @@ module.exports = {
   up: new THREE.Vector3(0, 1, 0),
   left: new THREE.Vector3(1, 0, 0),
   zero: new THREE.Vector3(0, 0, 0),
-  
+
   cgroup: {
     PLAYER: 1,
     BULLET: 2,
@@ -15,6 +15,6 @@ module.exports = {
     NONPLAYER: 2 | 4 | 8,
     ALL: 1 | 2 | 4 | 8
   },
-  
-  LEVEL_SEGMENTS: 30
+
+  LEVEL_SEGMENTS: 60
 };

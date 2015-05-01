@@ -4,7 +4,7 @@ var hook = require('../hook');
 var global = require('../global');
 
 var VARIANCE = 20;
-var NUMASTEROIDS = 10;
+var NUMASTEROIDS = 5;
 
 var AsteroidField = function(level, remaining) {
   var point = level.points[level.points.length-1].clone().add(new THREE.Vector3(

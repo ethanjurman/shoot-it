@@ -5,6 +5,7 @@ var socket = io();
 
 socket.on('add plane', function(player){
 	var color = Number(player.color);
+	console.log(color);
 	localStorage[player.playerId] = player.color;
   var ply = players.create(color);
   ply.userId = player.playerId;
@@ -19,7 +20,8 @@ socket.on('update plane', function(data){
   // if (!ply) throw new Error('Got update for nonexistant player id:'+ id +'');
   if (!ply) {
 		// if the player doesn't exit, add them (and use the color we stored earlier)
-	  var color = localStorage[id] || 0xfffffff;
+	  var color = localStorage[id] || 0xffffff*Math.random();
+		console.log(color);
 		var ply = players.create(color);
 	  ply.userId = id;
 	  console.log("%c ADDED PLAYER "+ply.userId,"color: #"+color.toString(16));
