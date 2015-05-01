@@ -10,8 +10,6 @@ var Game = function() {
   this.initPhysics();
   this.initScene();
   this.initStarfield();
-  //this.initLevel();
-  //this.makeGrid();
 
   this.level = new Level(this, Math.random());
 
@@ -26,14 +24,15 @@ var Game = function() {
 Game.prototype.initStarfield = function() {
     // Starfield    
     var stars = new THREE.Geometry();
-    for (var i=0; i<1000; i++) {
-      stars.vertices.push(new THREE.Vector3(
-        1e3 * Math.random() - 5e2,
-        1e3 * Math.random() - 5e2,
-        -1e2
-      ));
+    for (var i=0; i<10000; i++) {
+      var vec = new THREE.Vector3(
+        Math.random()-0.5,
+        Math.random()-0.5,
+        Math.random()-0.5
+      ).normalize().multiplyScalar(30000);
+      stars.vertices.push(vec);
     }
-    var star_stuff = new THREE.PointCloudMaterial();
+    var star_stuff = new THREE.PointCloudMaterial({sizeAttenuation: true, size: 100.0, fog: false, color: 0xffffff});
     var star_system = new THREE.PointCloud(stars, star_stuff);
     this.scene.add(star_system);
 };
@@ -58,21 +57,6 @@ Game.prototype.requestAnimationFrame = function() {
   });
 };
 
-Game.prototype.makeGrid = function() {
-  var a = [];
-  for(var i = 0; i < 20; i++) {
-    a[i] = [];
-    for(var j = 0; j < 20; j++) {
-      a[i][j] = new Asteroid((i-10)*1.5,-8,(j-10)*1.5);
-    }
-  }
-}
-
-Game.prototype.initLevel = function() {
-  //var Asteroid1 = new Asteroid(0);
-  var Asteroid2 = new Asteroid(-100);
-}
-
 Game.prototype.initScene = function() {
   var self = this;
   this.renderer = new THREE.WebGLRenderer({
@@ -89,7 +73,7 @@ Game.prototype.initScene = function() {
     75,
     window.innerWidth / window.innerHeight,
     1,
-    1000
+    10000000
   );
   this.camera.position.set( 0, 0, 50 );
   //this.camera.lookAt( new THREE.Vector3(0, 0, 0) );
