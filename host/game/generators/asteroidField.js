@@ -48,14 +48,16 @@ var AsteroidField = function(level, remaining) {
       }
     }
 
-    var asteroid = new Asteroid(
-      tempPos[0],
-      tempPos[1],
-      tempPos[2],
-      tempSize);
+    if(iterations < 5) {
+      var asteroid = new Asteroid(
+        tempPos[0],
+        tempPos[1],
+        tempPos[2],
+        tempSize);
 
-    sizes.push(tempSize);
-    positions.push(tempPos);
+      sizes.push(tempSize);
+      positions.push(tempPos);
+    }
   }
   if (remaining > 0)
     AsteroidField(level, remaining - 1);
