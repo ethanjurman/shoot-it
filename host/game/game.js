@@ -13,7 +13,7 @@ var Game = function() {
   //this.initLevel();
   //this.makeGrid();
 
-  this.level = new Level(this, Math.random());
+  this.level = new Level(this, Math.random(), new THREE.Vector3(0,0,0));
 
   var self = this;
   var handleResize = function() {
@@ -86,7 +86,7 @@ Game.prototype.initScene = function() {
   this.scene = new THREE.Scene();
 
   this.camera = new THREE.PerspectiveCamera(
-    75,
+    100,
     window.innerWidth / window.innerHeight,
     1,
     1000

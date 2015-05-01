@@ -8,8 +8,8 @@ var Asteroid = require('./entity/asteroid');
 var LEVEL_SEGMENTS = global.LEVEL_SEGMENTS;
 
 //TODO: Generators that aren't full random, but have theme and cohesion, ala minecraft biomes
-var Level = function(gameObject, seed) {
-  this.points = [new THREE.Vector3(0,0,0)];
+var Level = function(gameObject, seed, startPoint) {
+  this.points = [startPoint];
   generators.AsteroidField(this, LEVEL_SEGMENTS - 1);
 
   this.path = new THREE.SplineCurve3(this.points);
