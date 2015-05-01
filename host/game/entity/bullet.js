@@ -14,10 +14,11 @@ var Bullet = function(position, angle) {
   var body = new CANNON.Body({mass: 1});
   body.addShape(shape);
   body.initVelocity.set(angle.x + 0, angle.y + 0, angle.z + 100);
-  body.angularDamping = 0.5;
+  body.velocity.set(0, 0, -1);
+  body.angularDamping = 0.0;
   this.setPhysicsBody(body);
   this.setCollisionGroup(global.cgroup.BULLET);
-  this.setCollisionMask(global.cgroup.WORLD | global.cgroup.ENEMY);
+  this.setCollisionMask(global.cgroup.WORLD);
   this.setGravity(0);
   setTimeout((function(){
     if (this) {
