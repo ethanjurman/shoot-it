@@ -40,7 +40,7 @@ Game.prototype.addScore = function(initials, score){
 Game.prototype.betweenLevel = function() {
   var self = this;
   var pos = self.level.points[global.LEVEL_SEGMENTS -1];
-  //this.level.remove();
+  this.level.remove();
   var highscoreDiv = document.getElementById('highscores');
   highscoreDiv.innerHTML = "";
   highscoreDiv.style.display = "";
