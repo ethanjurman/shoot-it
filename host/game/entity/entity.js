@@ -23,18 +23,23 @@ if (!String.prototype.endsWith) { //Polyfill
 var Entity = function() {
   Entity._registry.push(this);
   
-  this._collisionGroup = global.cgroup.ALL;
-  this._collisionMask = global.cgroup.ALL;
+  this._collisionGroup = global.cgroup.NONE;
+  this._collisionMask = global.cgroup.NONE;
 };
 
-Entity.prototype.setCollisionGroup = function(cgroup) {
+/*
+* from cannon:
+*    if( (bodyA.collisionFilterGroup & bodyB.collisionFilterMask)===0 || (bodyB.collisionFilterGroup & bodyA.collisionFilterMask)===0)
+*        then no collision
+*/
+Entity.prototype.setCollisionGroup = function(cgroup) { //The group(s) an entity belongs to
   this._collisionGroup = cgroup;
   if (this.body) {
     this.body.collisionFilterGroup = cgroup;
   }
 };
 
-Entity.prototype.setCollisionMask = function(cgroup) {
+Entity.prototype.setCollisionMask = function(cgroup) { //The groups to collide with
   this._collisionMask = cgroup;
   if (this.body) {
     this.body.collisionFilterMask = cgroup;
@@ -189,7 +194,7 @@ hook.add('think', function(deltatime) {
         ent.mesh.quaternion.copy(ent.body.quaternion);
     }
   }
-
+  
   for (var i=0; i<Entity._registry.length; i++) {
     var ent2 = Entity._registry[i];
     if (ent2.think) {
@@ -242,15 +247,20 @@ Entity.prototype.getRotation = function() {
 * Remove the entity from the world
 */
 Entity.prototype.remove = function() {
+  if (this.removed) {
+    return;
+  }
+    
 
   if (this.onRemove)
     this.onRemove();
 
+  this.removed = true;
   Entity._registry.splice(Entity._registry.indexOf(this), 1);
 
   //Queue body for deletion, in case called in a physics callback
   var body = this.body;
-  setTimeout(function() { Entity.world.remove(body); }, 0);
+  setTimeout(function() { Entity.world.remove(body); }, 1);
   Entity.scene.remove(this.mesh);
 };
 

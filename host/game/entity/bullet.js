@@ -18,7 +18,7 @@ var Bullet = function(position, angle) {
   body.angularDamping = 0.0;
   this.setPhysicsBody(body);
   this.setCollisionGroup(global.cgroup.BULLET);
-  // this.setCollisionMask(global.cgroup.WORLD);
+  this.setCollisionMask(global.cgroup.WORLD | global.cgroup.ENEMY);
   this.setGravity(0);
   setTimeout((function(){
     if (this) {
@@ -30,14 +30,14 @@ var Bullet = function(position, angle) {
 Bullet.prototype = Object.create( Entity.prototype );
 
 Bullet.LIVE_TIME_MS = 1500;
-Bullet.IMPACT_DAMAGE = 20;
+Bullet.IMPACT_DAMAGE = 100;
 
 Bullet.prototype.onCollide = function(e) {
   if (e.body && e.body.entity && e.body.entity.applyDamage) {
-    console.log(e);
+    console.log('Bullet colliding with: ', e.body.entity);
     e.body.entity.applyDamage(Bullet.IMPACT_DAMAGE);
-    this.remove();
   }
+  this.remove();
 };
 
 module.exports = Bullet;

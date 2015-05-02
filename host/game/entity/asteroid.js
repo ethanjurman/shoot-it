@@ -16,10 +16,9 @@ var Asteroid = function(xPos, yPos, zPos, size) {
   var body = new CANNON.Body({mass: 10000});
   body.addShape(shape);
   body.angularVelocity.set(Math.random(),0,Math.random());
-  body.angularDamping = 0.5;
   this.setPhysicsBody(body);
   this.setCollisionGroup(global.cgroup.WORLD);
-  this.setCollisionMask(global.cgroup.PLAYER);
+  this.setCollisionMask(global.cgroup.PLAYER | global.cgroup.BULLET);
   this.setGravity(0);
   this.setPos(new THREE.Vector3(xPos,yPos,zPos));
   var type = Math.ceil(Math.random()*2)+1; // random type
@@ -31,10 +30,5 @@ var Asteroid = function(xPos, yPos, zPos, size) {
 };
 
 Asteroid.prototype = Object.create( Damageable.prototype );
-Asteroid.prototype.userId = -1;
-
-Asteroid.prototype.think = function() {
-
-};
 
 module.exports = Asteroid;

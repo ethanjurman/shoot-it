@@ -7,6 +7,7 @@ module.exports = {
   zero: new THREE.Vector3(0, 0, 0),
 
   cgroup: {
+    NONE: 0,
     PLAYER: 1,
     BULLET: 2,
     WORLD: 4,

@@ -3,10 +3,9 @@ var THREE = require('../libs/three');
 var CANNON = require('../libs/cannon');
 /*jshint -W079 */ var global = require('../global');
 var Bullet = require('./bullet');
-var global = require('../global');
 
 var Player = function(color) {
-  Damageable.call(this, 3);
+  Damageable.call(this, Player.MAX_HEALTH);
   // base square ... not in use anymore?
   this.setGeometry(
       new THREE.BoxGeometry( 5, 5, 5 ),
@@ -18,6 +17,7 @@ var Player = function(color) {
   body.angularVelocity.set(0,0,0);
   this.setPhysicsBody(body);
   this.setCollisionGroup(global.cgroup.PLAYER);
+  this.setCollisionMask(global.cgroup.WORLD);
   this.setGravity(0);
   this.score = 0;
   var self = this;
@@ -76,5 +76,33 @@ Player.prototype.applyMotion = function(motion) {
   }
   this.motion = motion;
 };
+
+function nameof(obj){
+  return obj.constructor.toString();
+}
+
+Player.prototype.onCollide = function(e) {
+  if (e.body && e.body.entity && e.body.entity.applyDamage) {
+    console.log('Player colliding with: ', e.body.entity);
+    e.body.entity.applyDamage(200);
+    this.applyDamage(50); 
+  }
+};
+
+Player.prototype.applyDamage = function(damage) {
+  /*this.setHealth(this.getHealth()-damage);
+  if (this.getHealth()<=0) {
+    this.setHealth(0);
+    console.log('Player '+this.userId+' destroyed');
+    this.setHealth(Player.MAX_HEALTH);
+  }*/
+  console.log('Player assigned '+damage+' damage.');
+};
+
+Player.prototype.onDestroy = function() {
+  throw new Error('Player onDestroy should never be called?');
+};
+
+Player.MAX_HEALTH = 100;
 
 module.exports = Player;
