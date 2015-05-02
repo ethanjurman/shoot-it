@@ -118,7 +118,7 @@ Game.prototype.initScene = function() {
   this.scene = new THREE.Scene();
 
   this.camera = new THREE.PerspectiveCamera(
-    100,
+    85, //FPS FOV, any higher adds lensing artifacts
     window.innerWidth / window.innerHeight,
     1,
     10000000
