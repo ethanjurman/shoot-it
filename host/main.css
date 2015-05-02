@@ -16,6 +16,18 @@ canvas {
   z-index: -100;
 }
 
+.score {
+  width:5em;
+}
+.score:before {
+  content: attr(data-initials);
+  float: left;
+}
+.score:after {
+  content: attr(data-score);
+  float: right;
+}
+
 #title-gif {
   width:50%;
   position:fixed;
@@ -54,10 +66,10 @@ canvas {
 #highscores {
   font-size: 2em;
   font-weight: bold;
-  width: 100%;
   position: fixed;
   top: 50px;
-  text-align:center;
+  text-align: right;
+  right: 2em;
 }
 
 #timer {

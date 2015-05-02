@@ -46,7 +46,8 @@ Player.prototype.think = function() {
     this.relativePos.z = Math.max(-1.5,Math.min(1.5,this.relativePos.z + this.motion.z / 300));
     // y backwards?
     var forwardVector = new THREE.Vector3(this.relativePos.y*10,-this.relativePos.z*5, -10).applyEuler(cameraRot);
-    this.setPos((new THREE.Vector3()).addVectors(cameraPos, forwardVector));
+    var positionVector = (new THREE.Vector3()).addVectors(cameraPos, forwardVector);
+    this.setPos(new THREE.Vector3(positionVector.x, positionVector.y, cameraPos.z - 10));
   }
   if (this.firing) {
     this.fireProjectile();

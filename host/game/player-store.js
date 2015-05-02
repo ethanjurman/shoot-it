@@ -5,6 +5,8 @@ store.create = function(color) {
   var p = new Player(color);
   store.players.push(p);
   document.getElementById("title-gif").style.display = "none";
+  document.getElementById("qr_code_play").style.display = "none";
+  document.getElementById("qr_code_config").style.display = "none";
   return p;
 };
 
@@ -19,6 +21,8 @@ store.remove = function(player) {
     setTimeout(function(){
       document.getElementById("title-gif").src = "/asteroidDrive.gif";
       document.getElementById("title-gif").style.display = "";
+      document.getElementById("qr_code_play").style.display = "";
+      document.getElementById("qr_code_config").style.display = "";
     },2000);
   }
 };

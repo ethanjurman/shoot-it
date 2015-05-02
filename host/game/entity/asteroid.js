@@ -15,7 +15,7 @@ var Asteroid = function(xPos, yPos, zPos, size) {
   var shape = new CANNON.Sphere(size);
   var body = new CANNON.Body({mass: 10000});
   body.addShape(shape);
-  // body.angularVelocity.set(Math.random(),0,Math.random());
+  body.angularVelocity.set(Math.random(),0,Math.random());
   body.angularDamping = 0.5;
   this.setPhysicsBody(body);
   this.setCollisionGroup(global.cgroup.WORLD);

@@ -7,10 +7,16 @@ var players = require('./player-store');
 var Asteroid = require('./entity/asteroid');
 var global = require('./global');
 
+var Score = function(initials, score){
+  this.initials = initials;
+  this.score = score;
+}
+
 var Game = function() {
   this.initPhysics();
   this.initScene();
   this.initStarfield();
+  this.scores = [];
 
   this.level = new Level(this, Math.random(), new THREE.Vector3(0,0,0));
 
@@ -26,11 +32,41 @@ var Game = function() {
   });
 };
 
+Game.prototype.addScore = function(initials, score){
+  this.scores.push(new Score(initials, score));
+  this.scores.sort(function(a,b){return a.score - b.score});
+};
+
 Game.prototype.betweenLevel = function() {
-  var self = this
+  var self = this;
   var pos = self.level.points[global.LEVEL_SEGMENTS -1];
-  //this.level.remove(); 
-  setTimeout(function(){self.level = new Level(self, Math.random(), pos)},10000);
+  //this.level.remove();
+  var highscoreDiv = document.getElementById('highscores');
+  highscoreDiv.innerHTML = "";
+  highscoreDiv.style.display = "";
+  var scoreIndex = self.scores.length;
+  var loadScores = setInterval(function(){
+    var s = self.scores[--scoreIndex];
+    var score = document.createElement("div");
+    score.setAttribute("class","score");
+    score.setAttribute("data-initials",s.initials);
+    score.setAttribute("data-score",s.score);
+    highscoreDiv.appendChild(score);
+    if (scoreIndex == 0) {window.clearInterval(loadScores);}
+  },750);
+  var timer = document.getElementById("timer");
+  timer.style.display = "";
+  var t = 10;
+  var loadLevel = setInterval(function(){
+    timer.innerHTML = t--;
+    console.log(t);
+    if (t == 0) {
+      self.level = new Level(self, Math.random(), pos);
+      highscoreDiv.style.display = "none";
+      timer.style.display = "none";
+      window.clearInterval(loadLevel);
+    }
+  },1000);
 }
 
 Game.prototype.initStarfield = function() {
