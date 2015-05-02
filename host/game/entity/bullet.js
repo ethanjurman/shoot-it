@@ -13,8 +13,8 @@ var Bullet = function(position, angle) {
   var shape = new CANNON.Box(new CANNON.Vec3(1, 1, 1));
   var body = new CANNON.Body({mass: 10});
   body.addShape(shape);
-  body.initVelocity.set(angle.x + 0, angle.y + 0, angle.z + 100);
-  body.velocity.set(0, 0, -3);
+  var dir = (new THREE.Vector3()).subVectors(global.game.camera.lookAtPos,global.game.camera.position).normalize().multiplyScalar(3);
+  body.velocity.set(dir.x, dir.y, dir.z);
   body.angularDamping = 0.0;
   this.setPhysicsBody(body);
   this.setCollisionGroup(global.cgroup.BULLET);

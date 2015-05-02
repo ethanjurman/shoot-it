@@ -54,6 +54,7 @@ var Level = function(gameObject, seed, startPoint) {
     var t2 = (self.distance+1)*self.timescale;
     var boxPos = self.path.getPoint(t2);
     gameObject.camera.lookAt(boxPos);
+    gameObject.camera.lookAtPos = boxPos;
 
     var nodeNum = Math.floor(t*LEVEL_SEGMENTS);
     if (!called[nodeNum]) {
