@@ -5,6 +5,7 @@ var Level = require('./level');
 var hook = require('./hook');
 var players = require('./player-store');
 var Asteroid = require('./entity/asteroid');
+var global = require('./global');
 
 var Game = function() {
   this.initPhysics();
@@ -19,7 +20,18 @@ var Game = function() {
     self.camera.updateProjectionMatrix();
   };
   window.addEventListener( 'resize', handleResize, false );
+
+  hook.add('level done', function levelReset() {
+    self.betweenLevel();
+  });
 };
+
+Game.prototype.betweenLevel = function() {
+  var self = this
+  var pos = self.level.points[global.LEVEL_SEGMENTS -1];
+  //this.level.remove(); 
+  setTimeout(function(){self.level = new Level(self, Math.random(), pos)},10000);
+}
 
 Game.prototype.initStarfield = function() {
     // Starfield

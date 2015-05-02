@@ -16,5 +16,5 @@ module.exports = {
     ALL: 1 | 2 | 4 | 8
   },
 
-  LEVEL_SEGMENTS: 60
+  LEVEL_SEGMENTS: 30
 };

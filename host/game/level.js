@@ -10,7 +10,8 @@ var LEVEL_SEGMENTS = global.LEVEL_SEGMENTS;
 //TODO: Generators that aren't full random, but have theme and cohesion, ala minecraft biomes
 var Level = function(gameObject, seed, startPoint) {
   this.points = [startPoint];
-  generators.AsteroidField(this, LEVEL_SEGMENTS - 1);
+  this.asteroidList = [];
+  this.asteroidList.push(generators.AsteroidField(this, LEVEL_SEGMENTS - 1));
 
   this.path = new THREE.SplineCurve3(this.points);
 
@@ -42,6 +43,8 @@ var Level = function(gameObject, seed, startPoint) {
       //level complete
       console.log('level done');
       hook.remove('think', levelThink);
+      hook.call('level done');
+      return;
     }
     self.plane.position = self.path.getPoint(t);
     self.plane.rotation.setFromUnitVectors(global.forward, self.path.getTangent(t));
@@ -74,7 +77,14 @@ var Level = function(gameObject, seed, startPoint) {
 Level.prototype = {};
 
 Level.prototype.remove = function() {
-
+  /*
+  for(var i = 0; i < this.asteroidList.length; i++) {
+    if(this.asteroidList[i] === undefined) {
+      console.log(this.asteroidList[i]);
+      this.asteroidList[i].remove();
+    }
+  }
+  */
   Entity.scene.remove(this.line);
 };
 

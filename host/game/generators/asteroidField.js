@@ -54,7 +54,7 @@ var AsteroidField = function(level, remaining) {
         tempPos[1],
         tempPos[2],
         tempSize);
-
+      level.asteroidList.push(asteroid);
       sizes.push(tempSize);
       positions.push(tempPos);
     }
