@@ -77,6 +77,14 @@ var Level = function(gameObject, seed, startPoint) {
 Level.prototype = {};
 
 Level.prototype.remove = function() {
+  var length = this.asteroidList.length;
+  var tempRoid;
+  for(var i = 0; i < length; i++) {
+    tempRoid = this.asteroidList.pop();
+    if(tempRoid) {
+      tempRoid.remove();
+    }
+  }
   Entity.scene.remove(this.line);
 };
 
