@@ -6,11 +6,7 @@ var hook = require('./hook');
 var players = require('./player-store');
 var Asteroid = require('./entity/asteroid');
 var global = require('./global');
-
-var Score = function(initials, score){
-  this.initials = initials;
-  this.score = score;
-}
+var Score = require('./score');
 
 var Game = function() {
   this.initPhysics();
@@ -41,6 +37,10 @@ Game.prototype.betweenLevel = function() {
   var self = this;
   var pos = self.level.points[global.LEVEL_SEGMENTS -1];
   this.level.remove();
+  players.players.forEach(function(ply) {
+    self.addScore(ply.score.initials, ply.score.score);
+    ply.score.reset();
+  });
   var highscoreDiv = document.getElementById('highscores');
   highscoreDiv.innerHTML = "";
   highscoreDiv.style.display = "";

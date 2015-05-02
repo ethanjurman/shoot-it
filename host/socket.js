@@ -4,10 +4,11 @@ var THREE = require('./game/libs/three');
 var socket = io();
 
 socket.on('add plane', function(player){
+  console.log(player);
 	var color = Number(player.color);
 	console.log(color);
 	localStorage[player.playerId] = player.color;
-  var ply = players.create(color);
+  var ply = players.create(color, player.initials);
   ply.userId = player.playerId;
   console.log("%c ADDED PLAYER "+ply.userId,"color: #"+color.toString(16));
   ply.setPos(new THREE.Vector3(0,0,0));

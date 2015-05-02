@@ -106,6 +106,10 @@ setShipColor = function(color){
   localStorage.setItem('color',color);
 }
 
+confirmInitials = function() {
+  localStorage.setItem('initials', document.querySelector('.initials').value);
+}
+
 generateColors = function(){
   // generates all the possible colors
   var c = ['dd','77','22'];

@@ -26,7 +26,14 @@
       <div class="viewport">
         <div class="flipsnap"></div>
       </div>
-      <button class="continue" onclick="window.location.href = '/control';"> Play </button>
+      <button class="continue" data-next="wizard-04" onclick="continueWizard(event)"> Continue </button>
+    </div>
+    
+    <div id="wizard-04" style="display:none;">
+      <button class="back" data-next="wizard-03" onclick="continueWizard(event)"> Back </button>
+      <div class="ship-select"> Input your initials </div>
+      <input class="initials" placeholder="initials" type="text"/>
+      <button class="continue" onclick="confirmInitials(); window.location.href = '/control';"> Play </button>
     </div>
   </body>
 </html>

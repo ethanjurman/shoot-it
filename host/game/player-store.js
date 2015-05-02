@@ -1,8 +1,8 @@
 var Player = require('./entity/player');
 var store = { players: [] };
 
-store.create = function(color) {
-  var p = new Player(color);
+store.create = function(color, initials) {
+  var p = new Player(color, (initials || 'AAA').toUpperCase().substring(0,3));
   store.players.push(p);
   document.getElementById("title-gif").style.display = "none";
   document.getElementById("qr_code_play").style.display = "none";

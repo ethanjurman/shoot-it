@@ -54,7 +54,7 @@ Enemy.prototype.fire = function(){
 
 Enemy.prototype.fireProjectile = function(){
   // fires the projectile once
-  new Bullet(this.getPos(), new THREE.Vector3(this.motion.x,this.motion.y,5).normalize());
+  new Bullet(this, this.getPos(), new THREE.Vector3(this.motion.x,this.motion.y,5).normalize());
 }
 
 

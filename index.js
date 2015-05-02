@@ -42,9 +42,9 @@ app.use(express.static(path.join(__dirname, 'static')));
 var playerCount = 0;
 io.on('connection', function(socket){
   var playerId = ++playerCount;
-  socket.on('add plane', function(color){
+  socket.on('add plane', function(color, initials){
     console.log(playerId + " joined");
-    var player = {playerId:playerId,color:color};
+    var player = {playerId:playerId,color:color,initials:initials};
     io.emit('add plane',player);
   });
   socket.on('disconnect', function(){

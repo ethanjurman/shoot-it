@@ -3,8 +3,9 @@ var THREE = require('../libs/three');
 var CANNON = require('../libs/cannon');
 /*jshint -W079 */ var global = require('../global');
 var Bullet = require('./bullet');
+var Score = require('../score');
 
-var Player = function(color) {
+var Player = function(color, initials) {
   Damageable.call(this, Player.MAX_HEALTH);
   // base square ... not in use anymore?
   this.setGeometry(
@@ -30,6 +31,7 @@ var Player = function(color) {
 
   // starting relative position in xy space. 0,0 is the left bottom; 1,1 is right top.
   this.relativePos = {y:0,z:0};
+  this.score = new Score(initials, 0);
 };
 
 Player.prototype = Object.create( Damageable.prototype );
@@ -62,7 +64,11 @@ Player.prototype.fire = function(){
 
 Player.prototype.fireProjectile = function(){
   // fires the projectile once
-  new Bullet(this.getPos(), this.Forward);
+  new Bullet(
+    this, 
+    this.getPos(), 
+    (new THREE.Vector3()).subVectors(global.game.camera.lookAtPos,global.game.camera.position).normalize().multiplyScalar(3)
+  );
 };
 
 Player.prototype.applyMotion = function(motion) {
@@ -77,15 +83,12 @@ Player.prototype.applyMotion = function(motion) {
   this.motion = motion;
 };
 
-function nameof(obj){
-  return obj.constructor.toString();
-}
-
 Player.prototype.onCollide = function(e) {
   if (e.body && e.body.entity && e.body.entity.applyDamage) {
     console.log('Player colliding with: ', e.body.entity);
     e.body.entity.applyDamage(200);
     this.applyDamage(50); 
+    this.score.add(-50);
   }
 };
 
