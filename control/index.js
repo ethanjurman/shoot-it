@@ -22,19 +22,17 @@ if (window.DeviceMotionEvent != undefined) {
 
 var vibrate = (window.navigator && window.navigator.vibrate.bind(window.navigator)) || function () {};
 
-deviceFire = function(){
+var deviceFire = window.deviceFire = function() {
   var socket = io();
   socket.emit("fire");
   var fireButton = document.getElementById("fire");
-  fireButton.style.background = "darkblue";
   vibrate(20); // vibrate for 20ms
-  fireButton.style.background = "darkred";
 }
-updatePlane = function(motion){
-  socket.emit("update plane",motion); // this goes to index.js
+var updatePlane = window.updatePlane = function(motion) {
+  socket.emit("update plane", motion); // this goes to index.js
 }
 
-fullscreenToggle = function(){
+var fullscreenToggle = window.fullscreenToggle = function() {
   var doc = window.document;
   var docEl = doc.documentElement;
 
@@ -49,7 +47,11 @@ fullscreenToggle = function(){
   }
 }
 
-window.onload = function(){
+window.onload = function() {
   var socket = io();
-  socket.emit('add plane',localStorage.getItem('color')||'0x777777', localStorage.getItem('initials'));
+  var color = localStorage.getItem('color');
+  if (color) {
+    document.getElementById('fire').style.background = 'rgb('+ (color >> 16) +', '+ ((color >> 8) & 0xFF)+', '+ (color & 0xFF)+')';
+  }
+  socket.emit('add plane', color || '0x777777', localStorage.getItem('initials'));
 }
