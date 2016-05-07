@@ -19,3 +19,5 @@ module.exports = {
 
   LEVEL_SEGMENTS: 30
 };
+
+window.globals = module.exports;

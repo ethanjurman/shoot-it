@@ -20,11 +20,12 @@ var Bullet = function(owner, position, vel) {
   this.setCollisionGroup(global.cgroup.BULLET);
   this.setCollisionMask(global.cgroup.WORLD | global.cgroup.ENEMY);
   this.setGravity(0);
+  var self = this;
   setTimeout((function(){
-    if (this) {
-      this.remove();
+    if (self) {
+      self.remove();
     }
-  }).bind(this), Bullet.LIVE_TIME_MS);
+  }), Bullet.LIVE_TIME_MS);
 };
 
 Bullet.prototype = Object.create( Entity.prototype );

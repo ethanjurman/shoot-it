@@ -109,18 +109,7 @@ Entity.prototype.setGeometry = function(geom, mats) {
   }
 
   if (this.mesh) {
-    var pos = this.getPos();
-    var rot = this.getRotation();
     Entity.scene.remove(this.mesh);
-    this.mesh = new THREE.Mesh(tGeom, facemat);
-    Entity.scene.add(this.mesh);
-    this.setPos(pos);
-    this.setRotation(rot);
-  } else {
-    this.mesh = new THREE.Mesh(tGeom, facemat); //Assume worst case for phys meshes
-    Entity.scene.add(this.mesh);
-    this.setPos(this.pos || new THREE.Vector3());
-    this.setRotation(this.rot || new THREE.Quaternion());
   }
   this.mesh = new THREE.Mesh(tGeom, facemat); //Assume worst case for phys meshes
   Entity.scene.add(this.mesh);
