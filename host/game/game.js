@@ -62,7 +62,7 @@ Game.prototype.betweenLevel = function() {
     console.log(t);
     if (t == 0) {
       players.players.forEach(function(ply) {
-        self.addScore(ply.score.initials, ply.score.score);
+        ply.score.reset();
       });
       self.level = new Level(self, Math.random(), pos);
       highscoreDiv.style.display = "none";
