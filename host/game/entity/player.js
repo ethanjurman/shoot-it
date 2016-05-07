@@ -34,7 +34,7 @@ var Player = function(color, initials) {
   this.score = new Score(initials, 0);
 
   this.nametag = document.createElement('h1');
-  this.nametag.innerHTML = ''+initials+' - '+this.score.score;
+  this.nametag.innerHTML = ''+initials+' &middot; '+this.score.score;
   this.nametag.style.color = 'rgb('+ (color >> 16) +', '+ ((color >> 8) & 0xFF)+', '+ (color & 0xFF)+')';
   this.nametag.setAttribute("class", "nametag");
   document.body.appendChild(this.nametag);
@@ -64,7 +64,7 @@ Player.prototype.think = function() {
   var pos = this.screenPosition();
   this.nametag.style.left = (pos.x)+'px';
   this.nametag.style.bottom = (window.innerHeight - pos.y)+'px';
-  this.nametag.innerHTML = ''+this.score.initials+' - '+this.score.score;
+  this.nametag.innerHTML = ''+this.score.initials+' &middot; '+this.score.score;
 };
 
 Player.prototype.fire = function(){
@@ -77,7 +77,7 @@ Player.prototype.fireProjectile = function(){
   new Bullet(
     this, 
     this.getPos(), 
-    (new THREE.Vector3()).subVectors(global.game.camera.lookAtPos,global.game.camera.position).normalize().multiplyScalar(3)
+    (new THREE.Vector3()).subVectors(global.game.camera.lookAtPos,global.game.camera.position).normalize().multiplyScalar(4.5)
   );
 };
 

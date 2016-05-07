@@ -9,19 +9,19 @@ var Asteroid = function(xPos, yPos, zPos, size) {
   Damageable.call(this, 100);
   // base square ... not in use anymore?
   this.setGeometry(
-      new THREE.SphereGeometry( size, 10),
+      new THREE.SphereGeometry(size, 10),
       new THREE.MeshPhongMaterial({ color: 0x666666 })
   );
   var shape = new CANNON.Sphere(size);
-  var body = new CANNON.Body({mass: 10000});
+  var body = new CANNON.Body({mass: 10000, angularDamping: 1, linearDamping: 1});
   body.addShape(shape);
-  body.angularVelocity.set(Math.random(),0,Math.random());
+  body.angularVelocity.set(Math.random()*0.1,0,Math.random()*0.1);
   this.setPhysicsBody(body);
   this.setCollisionGroup(global.cgroup.WORLD);
   this.setCollisionMask(global.cgroup.PLAYER | global.cgroup.BULLET);
   this.setGravity(0);
   this.setPos(new THREE.Vector3(xPos,yPos,zPos));
-  var type = Math.ceil(Math.random()*2)+1; // random type
+  var type = Math.random() > 0.5 ? 3 : 1; // random type
   var self = this;
   this.setModel('resources/asteroid'+type+'0.obj','resources/asteroid'+type+'0.mtl', function() {
     self.mesh.scale.set(size,size,size);

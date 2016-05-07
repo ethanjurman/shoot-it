@@ -31,8 +31,8 @@ var Level = function(gameObject, seed, startPoint) {
   this.plane.rotation.set(0,0,0,0);
 
   this.distance = 0;
-  this.velocity = 0.001;
-  this.timescale = 1/100;
+  this.velocity = 0.0025;
+  this.timescale = 2/100;
   var self = this;
   var box = new Asteroid(0,0,0);
   var called = {};
