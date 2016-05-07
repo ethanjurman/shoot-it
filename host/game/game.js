@@ -39,7 +39,6 @@ Game.prototype.betweenLevel = function() {
   this.level.remove();
   players.players.forEach(function(ply) {
     self.addScore(ply.score.initials, ply.score.score);
-    ply.score.reset();
   });
   var highscoreDiv = document.getElementById('highscores');
   highscoreDiv.innerHTML = "";
@@ -57,10 +56,14 @@ Game.prototype.betweenLevel = function() {
   var timer = document.getElementById("timer");
   timer.style.display = "";
   var t = 10;
+  timer.innerHTML = 10;
   var loadLevel = setInterval(function(){
     timer.innerHTML = t--;
     console.log(t);
     if (t == 0) {
+      players.players.forEach(function(ply) {
+        self.addScore(ply.score.initials, ply.score.score);
+      });
       self.level = new Level(self, Math.random(), pos);
       highscoreDiv.style.display = "none";
       timer.style.display = "none";
