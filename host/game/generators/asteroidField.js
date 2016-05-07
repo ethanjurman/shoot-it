@@ -2,11 +2,12 @@ var THREE = require('../libs/three');
 var Asteroid = require('../entity/asteroid');
 var hook = require('../hook');
 var global = require('../global');
+var Terrain = require('../entity/terrain');
 
 var VARIANCE = 20;
 var NUMASTEROIDS = 5;
 
-var AsteroidField = function(level, remaining) {
+function AsteroidField(level, remaining) {
   var point = level.points[level.points.length-1].clone().add(new THREE.Vector3(
         Math.random()-0.5/2,
         Math.random()-0.5/2,
@@ -59,8 +60,14 @@ var AsteroidField = function(level, remaining) {
       positions.push(tempPos);
     }
   }
-  if (remaining > 0)
-    AsteroidField(level, remaining - 1);
+  if (remaining > 0) {
+    if (Math.random() < 0.05) {
+      SquarecraftHazard(level, remaining - 1);
+    }
+    else {
+      AsteroidField(level, remaining - 1);
+    }
+  }
 
   var nodeId = global.LEVEL_SEGMENTS - (remaining+1);
   hook.add('node '+nodeId, function progressHook(level) {
@@ -70,4 +77,33 @@ var AsteroidField = function(level, remaining) {
   });
 };
 
-module.exports = AsteroidField;
+var up = global.up;
+var rightang = (new THREE.Quaternion()).setFromAxisAngle(up, -Math.PI/2);
+
+function SquarecraftHazard(level, remaining) {
+  var point = level.points[level.points.length-1].clone().add(new THREE.Vector3(
+        0.5,
+        0.5,
+        Math.random()-1.5).normalize().multiplyScalar(VARIANCE*2));
+
+  level.points.push(point);
+  var dir = level.points[level.points.length-2].clone().sub(point).normalize();
+  for (var i=0; i<8; i++) {
+    var ang = Math.PI*i/4;
+    var qang = new THREE.Quaternion();
+    qang.setFromAxisAngle(dir, ang);
+    var pos = new THREE.Vector3(0,-1,0);
+    pos.applyQuaternion(qang);
+    pos.multiplyScalar(VARIANCE * 1.5);
+    var dang = qang.multiply(rightang);
+    var loc = point.clone().add(pos);
+    var terrain = new Terrain(loc.x, loc.y, loc.z, VARIANCE, VARIANCE, VARIANCE);
+    terrain.setRotation(qang);
+    level.asteroidList.push(terrain);
+  }
+  
+  if (remaining > 0)
+    AsteroidField(level, remaining - 1);
+};
+
+module.exports = {SquarecraftHazard: SquarecraftHazard, AsteroidField: AsteroidField};
