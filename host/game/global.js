@@ -17,7 +17,7 @@ module.exports = {
     ALL: 1 | 2 | 4 | 8
   },
 
-  LEVEL_SEGMENTS: 30
+  LEVEL_SEGMENTS: 45
 };
 
 window.globals = module.exports;
