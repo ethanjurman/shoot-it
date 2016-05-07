@@ -282,4 +282,26 @@ Entity.prototype.Forward = function() {
   return dir;
 };
 
+Entity.prototype.screenPosition = function() {
+    var obj = this.mesh;
+    var camera = global.game.camera;
+    var renderer = global.game.renderer;
+    var vector = new THREE.Vector3();
+
+    var widthHalf = 0.5*renderer.context.canvas.width;
+    var heightHalf = 0.5*renderer.context.canvas.height;
+
+    obj.updateMatrixWorld();
+    vector.setFromMatrixPosition(obj.matrixWorld);
+    vector.project(camera);
+
+    vector.x = ( vector.x * widthHalf ) + widthHalf;
+    vector.y = - ( vector.y * heightHalf ) + heightHalf;
+
+    return { 
+        x: vector.x,
+        y: vector.y
+    };
+};
+
 module.exports = Entity;

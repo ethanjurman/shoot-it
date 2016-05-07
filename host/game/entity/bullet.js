@@ -8,8 +8,9 @@ var Bullet = function(owner, position, vel) {
   this.owner = owner;
   this.setGeometry(
       new THREE.BoxGeometry( 1, 1, 1 ),
-      new THREE.MeshPhongMaterial({ color: 0x666666 })
+      new THREE.MeshLambertMaterial({ color: owner.color })
   );
+  this.setMaterial(new THREE.MeshLambertMaterial({ color: owner.color }))
   this.setPos(new THREE.Vector3(position.x,position.y,position.z - 5));
   var shape = new CANNON.Box(new CANNON.Vec3(1, 1, 1));
   var body = new CANNON.Body({mass: 10});

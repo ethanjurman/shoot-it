@@ -32,6 +32,12 @@ var Player = function(color, initials) {
   // starting relative position in xy space. 0,0 is the left bottom; 1,1 is right top.
   this.relativePos = {y:0,z:0};
   this.score = new Score(initials, 0);
+
+  this.nametag = document.createElement('h1');
+  this.nametag.innerHTML = ''+initials+' - '+this.score.score;
+  this.nametag.style.color = 'rgb('+ (color >> 16) +', '+ ((color >> 8) & 0xFF)+', '+ (color & 0xFF)+')';
+  this.nametag.setAttribute("class", "nametag");
+  document.body.appendChild(this.nametag);
 };
 
 Player.prototype = Object.create( Damageable.prototype );
@@ -55,6 +61,10 @@ Player.prototype.think = function() {
     this.fireProjectile();
     this.firing = false;
   }
+  var pos = this.screenPosition();
+  this.nametag.style.left = (pos.x)+'px';
+  this.nametag.style.bottom = (window.innerHeight - pos.y)+'px';
+  this.nametag.innerHTML = ''+this.score.initials+' - '+this.score.score;
 };
 
 Player.prototype.fire = function(){
@@ -105,6 +115,12 @@ Player.prototype.applyDamage = function(damage) {
 Player.prototype.onDestroy = function() {
   throw new Error('Player onDestroy should never be called?');
 };
+
+Player.prototype.onRemove = function() {
+  if (this.nametag) {
+    this.nametag.remove();
+  }
+}
 
 Player.MAX_HEALTH = 100;
 

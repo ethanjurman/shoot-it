@@ -28,6 +28,12 @@ canvas {
   float: right;
 }
 
+.nametag {
+  position: fixed;
+  font-size: 1.3em;
+  font-weight: bold;
+}
+
 #title-gif {
   width:50%;
   position:fixed;
